@@ -117,12 +117,7 @@ const share = () => {
     </div>
     <div class="bar-item flex1" style="--icon-color: var(--red-6)" :class="{ isFavor, disabled: loading.fover }" @click="toggle('favor')">
       <div class="icon-box">
-        <svg v-if="loading.fover" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"></path>
-          <path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z">
-            <animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"></animateTransform>
-          </path>
-        </svg>
+        <Icon v-if="loading.fover" name="line-md:loading-twotone-loop" />
         <template v-else>
           <Icon v-if="isFavor" name="lets-icons:favorite-fill"></Icon>
           <Icon v-else name="lets-icons:favorite"></Icon>
@@ -132,12 +127,7 @@ const share = () => {
     </div>
     <div class="bar-item flex1" style="--icon-color: var(--green-6)" :class="{ isReblog, disabled: loading.reblog }" @click="toggle('reblog')">
       <div class="icon-box">
-        <svg v-if="loading.reblog" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"></path>
-          <path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z">
-            <animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"></animateTransform>
-          </path>
-        </svg>
+        <Icon v-if="loading.reblog" name="line-md:loading-twotone-loop" />
         <template v-else>
           <Icon v-if="isReblog" name="bx:repost"></Icon>
           <Icon v-else name="bx:repost"></Icon>
@@ -149,12 +139,7 @@ const share = () => {
       <div class="bar-item"></div>
       <div class="bar-item" :class="{ tagged: value.bookmarked, disabled: loading.bookmark }" @click="toggle('bookmarked')">
         <div class="icon-box">
-          <svg v-if="loading.bookmark" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"></path>
-            <path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z">
-              <animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"></animateTransform>
-            </path>
-          </svg>
+          <Icon v-if="loading.bookmark" name="line-md:loading-twotone-loop" />
           <template v-else>
             <Icon v-if="value.bookmarked" name="material-symbols:bookmark-added-rounded"></Icon>
             <Icon v-else name="material-symbols:bookmark-add-outline-rounded"></Icon>
