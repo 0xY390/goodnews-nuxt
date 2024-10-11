@@ -25,6 +25,7 @@ const renderImg = computed(() => {
           height: props.size + 'px',
           borderRadius: props.shape === 'circle' ? '50%' : 0,
         }"
+        loading="lazy"
       />
     </a-avatar>
   </div>
