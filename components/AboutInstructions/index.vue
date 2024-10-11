@@ -40,7 +40,7 @@ const linkList = computed(() => {
 
   const githubData = {
     name: t('about.github'),
-    link: 'https://github.com/goodnews-project/goodnews-nuxt/',
+    link: 'https://github.com/goodnews-project',
     showpoint: true,
     target: '_blank',
   };
