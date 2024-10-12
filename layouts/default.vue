@@ -423,8 +423,8 @@ const { logo } = useLogo();
             <div class="menu-panel-userInfo">
               <template v-if="!userInfo?.acct">
                 <div class="menu-panel-login">
-                  <a-button type="outline" shape="round" @click="goRouter('/register')"> {{ t('login.createAccount') }}</a-button>
-                  <a-button type="primary" shape="round" @click="clickToLogin">{{ t('login.clickToLogin') }}</a-button>
+                  <a-button type="outline" @click="goRouter('/register')"> {{ t('login.createAccount') }}</a-button>
+                  <a-button type="primary" @click="clickToLogin">{{ t('login.clickToLogin') }}</a-button>
                 </div>
               </template>
               <template v-else>

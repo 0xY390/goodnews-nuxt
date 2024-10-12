@@ -80,7 +80,7 @@ const toVote = async (e) => {
           </div>
         </template>
         <template v-else>
-          <a-button @click.stop="toVote(item)" long type="outline" :loading="item._loading" :disabled="voteLoading" shape="round">{{ item.name }}</a-button>
+          <a-button @click.stop="toVote(item)" long type="outline" :loading="item._loading" :disabled="voteLoading">{{ item.name }}</a-button>
         </template>
       </div>
 
