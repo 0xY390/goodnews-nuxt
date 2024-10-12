@@ -89,6 +89,9 @@ importers:
       vue-tippy:
         specifier: ^6.4.1
         version: 6.4.1(vue@3.5.6)
+      vue-virtual-scroller:
+        specifier: 2.0.0-beta.8
+        version: 2.0.0-beta.8(vue@3.5.6)
       worker-plugin:
         specifier: ^5.0.1
         version: 5.0.1(webpack@5.93.0)
@@ -3063,6 +3066,9 @@ packages:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
     engines: {node: '>= 8'}
 
+  mitt@2.1.0:
+    resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==}
+
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
@@ -4399,6 +4405,16 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
+  vue-observe-visibility@2.0.0-alpha.1:
+    resolution: {integrity: sha512-flFbp/gs9pZniXR6fans8smv1kDScJ8RS7rEpMjhVabiKeq7Qz3D9+eGsypncjfIyyU84saU88XZ0zjbD6Gq/g==}
+    peerDependencies:
+      vue: ^3.0.0
+
+  vue-resize@2.0.0-alpha.1:
+    resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue-router@4.3.2:
     resolution: {integrity: sha512-hKQJ1vDAZ5LVkKEnHhmm1f9pMiWIBNGF5AwU67PdH7TyXCj/a4hTccuUuYCAMgJK6rO/NVYtQIEN3yL8CECa7Q==}
     peerDependencies:
@@ -4411,6 +4427,11 @@ packages:
 
   vue-tippy@6.4.1:
     resolution: {integrity: sha512-PEAKdioZjUvYWz4euxHFSXKJbL6kIKO29/LtQaCBbnd5Vg0U5kL8iLuqRshB2I31pXPSQS0qJsWx56178eS2QA==}
+    peerDependencies:
+      vue: ^3.2.0
+
+  vue-virtual-scroller@2.0.0-beta.8:
+    resolution: {integrity: sha512-b8/f5NQ5nIEBRTNi6GcPItE4s7kxNHw2AIHLtDp+2QvqdTjVN0FgONwX9cr53jWRgnu+HRLPaWDOR2JPI5MTfQ==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -7960,6 +7981,8 @@ snapshots:
       minipass: 3.3.6
       yallist: 4.0.0
 
+  mitt@2.1.0: {}
+
   mitt@3.0.1: {}
 
   mkdirp-classic@0.5.3:
@@ -9546,6 +9569,14 @@ snapshots:
       '@vue/devtools-api': 6.6.1
       vue: 3.5.6
 
+  vue-observe-visibility@2.0.0-alpha.1(vue@3.5.6):
+    dependencies:
+      vue: 3.5.6
+
+  vue-resize@2.0.0-alpha.1(vue@3.5.6):
+    dependencies:
+      vue: 3.5.6
+
   vue-router@4.3.2(vue@3.5.6):
     dependencies:
       '@vue/devtools-api': 6.6.1
@@ -9560,6 +9591,13 @@ snapshots:
     dependencies:
       tippy.js: 6.3.7
       vue: 3.5.6
+
+  vue-virtual-scroller@2.0.0-beta.8(vue@3.5.6):
+    dependencies:
+      mitt: 2.1.0
+      vue: 3.5.6
+      vue-observe-visibility: 2.0.0-alpha.1(vue@3.5.6)
+      vue-resize: 2.0.0-alpha.1(vue@3.5.6)
 
   vue@3.5.6:
     dependencies:
