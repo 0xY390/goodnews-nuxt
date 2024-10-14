@@ -348,6 +348,7 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     </div>
 
     <ClientOnlyAModal
+      v-if="dialogVisible"
       v-model:visible="dialogVisible"
       :footer="false"
       hide-title
@@ -356,7 +357,7 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
       modal-class="photo-detail-modal"
       @close="closeDialog"
     >
-      <PhotoDetails v-if="dialogVisible" ref="photoDetailsDom" :status="props.status" @close="popClose"></PhotoDetails>
+      <PhotoDetails ref="photoDetailsDom" :status="props.status" @close="popClose"></PhotoDetails>
     </ClientOnlyAModal>
   </div>
 </template>

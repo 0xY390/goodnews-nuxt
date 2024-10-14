@@ -168,7 +168,7 @@ const gotoAccount = (account) => {
             <TweetBar v-model="tweetData" @goDetail="goDetail" @click.stop></TweetBar>
           </ClientOnly>
         </div>
-        <ClientOnly>
+        <ClientOnly v-if="showEmbedTweet">
           <EmbedTweet v-if="embedPath" :path="embedPath" v-model:show="showEmbedTweet" />
         </ClientOnly>
       </div>

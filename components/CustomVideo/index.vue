@@ -46,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <video ref="videoDom" v-only-play></video>
+  <video ref="videoDom" v-only-play preload="metadata"></video>
 </template>
 
 <style scoped lang="scss">

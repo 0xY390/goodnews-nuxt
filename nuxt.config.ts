@@ -134,6 +134,9 @@ export default defineNuxtConfig({
       // necessary for segment analytics lib to work
       global: {},
     },
+    optimizeDeps: {
+      include: ['vue-virtual-scroller'],
+    },
   },
 
   image: {

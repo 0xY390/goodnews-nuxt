@@ -1,6 +1,8 @@
 <script setup>
 import TweetMessage from '@/components/Tweet/TweetMessage.vue';
 import loadingIcon from '~/components/loadingIcon/index.vue';
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 const { t } = useI18n();
 const props = defineProps({
   // 是否隐藏推文
@@ -96,17 +98,14 @@ defineExpose({
 <template>
   <div class="tweet-messages">
     <div class="tweet-message-list">
-      <TweetMessage
-        v-for="(tweet, i) in tweets"
-        :status="tweet"
-        :index="i"
-        :key="tweet.id"
-        :isHidden="props.isHidden"
-        @reTweet="tweetUpdate"
-        @delete="hideTweet"
-        isLazy
-      >
-      </TweetMessage>
+      <DynamicScroller :items="tweets" :min-item-size="1" class="scroller" page-mode>
+        <template v-slot="{ item, index, active }">
+          <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[item.content_rendered]" :data-index="index" tag="article">
+            <TweetMessage :status="item" :index="index" :key="item.id" :isHidden="props.isHidden" @reTweet="tweetUpdate" @delete="hideTweet" isLazy>
+            </TweetMessage>
+          </DynamicScrollerItem>
+        </template>
+      </DynamicScroller>
 
       <div class="bottom-out" ref="observerButton">
         <template v-if="!finished">{{ t('tweet.loading') }}</template>
