@@ -32,13 +32,12 @@ const onConfirm = () => {
             type="primary"
             status="danger"
             @click="onConfirm"
-            shape="round"
             size="large"
             :loading="props.loading"
           >
             {{ t('common.delete') }}
           </a-button>
-          <a-button @click="onClose" shape="round" size="large">{{
+          <a-button @click="onClose" size="large">{{
             t('common.cancel')
           }}</a-button>
         </div>
