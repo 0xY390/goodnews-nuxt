@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.55.2",
+    "@arco-themes/vue-good-news": "^0.0.1",
     "@iconify/vue": "^4.1.2",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/i18n": "^8.3.1",
@@ -39,6 +40,7 @@
     "vue": "^3.5.6",
     "vue-router": "^4.3.2",
     "vue-tippy": "^6.4.1",
+    "vue-virtual-scroller": "2.0.0-beta.8",
     "worker-plugin": "^5.0.1"
   },
   "devDependencies": {

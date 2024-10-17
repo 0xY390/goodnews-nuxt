@@ -90,6 +90,7 @@ export default defineNuxtConfig({
     hookPrefix: 'Arco',
     locales: ['getLocale'],
     localePrefix: 'Arco',
+    theme: '@arco-themes/vue-good-news',
   },
 
   runtimeConfig: {
@@ -133,6 +134,9 @@ export default defineNuxtConfig({
       // By default, Vite doesn't include shims for NodeJS/
       // necessary for segment analytics lib to work
       global: {},
+    },
+    optimizeDeps: {
+      include: ['vue-virtual-scroller'],
     },
   },
 

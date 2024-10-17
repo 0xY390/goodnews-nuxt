@@ -423,8 +423,8 @@ const { logo } = useLogo();
             <div class="menu-panel-userInfo">
               <template v-if="!userInfo?.acct">
                 <div class="menu-panel-login">
-                  <a-button type="outline" shape="round" @click="goRouter('/register')"> {{ t('login.createAccount') }}</a-button>
-                  <a-button type="primary" shape="round" @click="clickToLogin">{{ t('login.clickToLogin') }}</a-button>
+                  <a-button type="outline" @click="goRouter('/register')"> {{ t('login.createAccount') }}</a-button>
+                  <a-button type="primary" @click="clickToLogin">{{ t('login.clickToLogin') }}</a-button>
                 </div>
               </template>
               <template v-else>
@@ -598,7 +598,7 @@ const { logo } = useLogo();
               </nuxt-link>
             </template>
           </div>
-          <AboutInstructions :showData="['version']"></AboutInstructions>
+          <AboutInstructions class="about-instructions" :showData="['github','version']"></AboutInstructions>
         </div>
       </a-drawer>
     </client-only>
@@ -883,8 +883,11 @@ const { logo } = useLogo();
   top: 0;
   z-index: 21;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
   .mobile-slide-header {
     padding-bottom: 10px;
+    flex-shrink: 0;
     .mobile-slide-header-avatar {
       font-size: 30px;
       width: 40px;
@@ -925,6 +928,8 @@ const { logo } = useLogo();
     }
   }
   .mobile-slide-content {
+    flex-shrink: 1;
+    overflow-y: auto;
     .menu-panel_link {
       padding-left: 10px;
       color: var(--color-text-1);
@@ -936,6 +941,9 @@ const { logo } = useLogo();
     .menu-panel_divid {
       display: none;
     }
+  }
+  .about-instructions {
+    margin-top: auto;
   }
 }
 @include respond('phone') {

@@ -1,15 +1,9 @@
 <template>
   <div class="follow-button">
-    <a-button
-      v-if="!modelValue"
-      @click.stop="follow"
-      type="primary"
-      shape="round"
-      :loading="loading"
-    >
+    <a-button v-if="!modelValue" @click.stop="follow" type="primary" :loading="loading">
       {{ t('account.following') }}
     </a-button>
-    <a-button v-else @click.stop="unFollow" shape="round" :loading="loading">
+    <a-button v-else @click.stop="unFollow" :loading="loading">
       {{ t('account.unFollow') }}
     </a-button>
   </div>

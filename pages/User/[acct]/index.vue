@@ -279,7 +279,7 @@ const toggleNotify = async (notify: number) => {
                 </a-button>
               </a-tooltip>
             </template>
-            <a-button shape="round" v-if="isSelf" @click="editInformation">{{ t('account.editProfile') }} </a-button>
+            <a-button v-if="isSelf" @click="editInformation">{{ t('account.editProfile') }} </a-button>
             <a-button @click="follow" v-else-if="!account.follower" :loading="followLoading" type="primary">{{ t('account.following') }} </a-button>
             <a-button @click="unFollow" v-else :loading="followLoading">{{ t('account.unFollow') }} </a-button>
 
