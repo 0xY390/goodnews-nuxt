@@ -7,3 +7,12 @@ export const getUserInfo = (acct) => {
     params: { acct }
   })
 }
+
+export const uploadFile = (file, config) => {
+  return service({
+    url: '/_api/v1/attachment',
+    method: 'post',
+    data: file,
+    ...config,
+  });
+}

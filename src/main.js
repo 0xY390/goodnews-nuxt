@@ -1,4 +1,4 @@
-import '@/assets/styles/mixin.scss'
+// import '@/assets/styles/mixin.scss'
 import './assets/main.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

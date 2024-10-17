@@ -1,5 +1,5 @@
 <script setup name="layout">
-// import RightPanel from './rightPanel.vue'
+import RightPanel from './rightPanel.vue'
 import AboutInstructions from '@/components/AboutInstructions/index.vue'
 import { storeToRefs } from 'pinia'
 import defaultAvatar from '@/assets/images/default-avatar.jpg'
@@ -557,8 +557,7 @@ console.log(`output->logo`, logo)
       </div>
       <div class="panel-area" v-if="showRightPanel">
         <div class="panel-container">
-          <!-- <RightPanel></RightPanel> -->
-          <div>rightPanel</div>
+          <RightPanel></RightPanel>
         </div>
       </div>
     </div>
