@@ -8,14 +8,23 @@ import router from './router'
 
 const app = createApp(App)
 
-app.use(createPinia())
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 app.use(router)
 
 import i18n from '@/locales'
 app.use(i18n)
 
+
+
 import { Icon } from '@iconify/vue' // 引入iconify
 app.component('Icon', Icon)
+
+// 自定义组件
+import components from '@/components'
+components(app)
 
 // 自定义指令
 import directives from '@/directives'

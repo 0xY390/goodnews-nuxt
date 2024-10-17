@@ -1,68 +1,71 @@
 <script setup>
-import { ref, reactive } from 'vue';
-const { t } = useI18n();
+import { ref, reactive } from 'vue'
+const { t } = useI18n()
 
-const emit = defineEmits(['update:current']);
+const emit = defineEmits(['update:current'])
 
 const props = defineProps({
   current: {
     type: Object,
     required: true,
-    default: () => ({}),
-  },
-});
+    default: () => ({})
+  }
+})
 
-const currentndex = ref(0);
+const currentndex = ref(0)
 const list = ref([
   { id: 0, label: t('tweet.everyone') },
   { id: 1, label: t('tweet.onlyFollowed') },
-  { id: 2, label: t('tweet.onlyMentioned') },
-]);
+  { id: 2, label: t('tweet.onlyMentioned') }
+])
 
 const path = reactive({
   0: 'material-symbols-light:globe-asia-sharp',
   1: 'mingcute:user-follow-2-line',
-  2: 'fluent:mention-16-filled',
-});
+  2: 'fluent:mention-16-filled'
+})
 
-const handleClick = (index) => {
-  currentndex.value = index;
-  visible.value = false;
-  emit('update:current', list.value[index]);
-};
+const handleClick = index => {
+  currentndex.value = index
+  visible.value = false
+  emit('update:current', list.value[index])
+}
 
-const visible = ref(false);
+const visible = ref(false)
 </script>
 
 <template>
-  <client-only>
-    <a-trigger auto-fit-position trigger="click">
-      <a-tooltip :content="t('tweet.chooseWhoCanReply')" mini position="top">
-        <a-button class="frame-btn" type="text" @click="visible = true">
-          <Icon name="material-symbols:globe"></Icon>
-        </a-button>
-      </a-tooltip>
-      <template #content>
-        <div class="menu">
-          <div class="title">
-            <div class="title-top">{{ $t('tweet.whoCanReply') }}</div>
-            <div class="title-bottom">{{ $t('tweet.chooseReplyPerson') }}</div>
+  <a-trigger auto-fit-position trigger="click">
+    <a-tooltip :content="t('tweet.chooseWhoCanReply')" mini position="top">
+      <a-button class="frame-btn" type="text" @click="visible = true">
+        <Icon icon="material-symbols:globe"></Icon>
+      </a-button>
+    </a-tooltip>
+    <template #content>
+      <div class="menu">
+        <div class="title">
+          <div class="title-top">{{ $t('tweet.whoCanReply') }}</div>
+          <div class="title-bottom">{{ $t('tweet.chooseReplyPerson') }}</div>
+        </div>
+        <div
+          class="menuitem"
+          v-for="(item, index) in list"
+          :key="item.id"
+          @click="handleClick(index)"
+        >
+          <div class="left">
+            <div class="left-icon flex justify-center items-center">
+              <Icon :icon="path[item.id]"></Icon>
+            </div>
+            <div class="left-label">{{ item.label }}</div>
           </div>
-          <div class="menuitem" v-for="(item, index) in list" :key="item.id" @click="handleClick(index)">
-            <div class="left">
-              <div class="left-icon flex justify-center items-center">
-                <Icon :name="path[item.id]"></Icon>
-              </div>
-              <div class="left-label">{{ item.label }}</div>
-            </div>
-            <div class="right" v-show="item.id === props.current.id">
-              <Icon name="tabler:check"></Icon>
-            </div>
+          <div class="right" v-show="item.id === props.current.id">
+            <Icon icon="tabler:check"></Icon>
           </div>
         </div>
-      </template>
-    </a-trigger>
-  </client-only>
+      </div>
+    </template>
+  </a-trigger>
 </template>
 
 <style lang="scss" scoped>

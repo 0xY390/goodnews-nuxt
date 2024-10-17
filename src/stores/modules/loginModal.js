@@ -1,17 +1,15 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
-export const useLoginModalStore = defineStore('loginModal', {
-  state: () => {
-    return {
-      isShowLogin: !!useRoute().query.login && !getUser().value,
-    };
-  },
-  actions: {
-    openLoginModal() {
-      this.isShowLogin = true;
-    },
-    closeLoginModal() {
-      this.isShowLogin = false;
-    },
-  },
-});
+export const useLoginModalStore = defineStore('loginModal', () => {
+  const isShowLogin = ref(false)
+
+  const openLoginModal = () => {
+    isShowLogin.value = true
+  }
+
+  const closeLoginModal = () => {
+    isShowLogin.value = false
+  }
+
+  return { isShowLogin, openLoginModal, closeLoginModal }
+})

@@ -100,7 +100,7 @@ const activeMonth = computed(() => {
             :popup-max-height="false"
           >
             <a-button>
-              <Icon name="mingcute:menu-line"></Icon>
+              <Icon icon="mingcute:menu-line"></Icon>
             </a-button>
             <template #content>
               <div class="menu-content">
@@ -108,8 +108,8 @@ const activeMonth = computed(() => {
                   v-for="item in btnOptions"
                   :key="item.value"
                   :value="item.value"
-                  >{{ item.label }}</a-doption
-                >
+                  >{{ item.label }}
+                </a-doption>
               </div>
             </template>
           </a-dropdown>

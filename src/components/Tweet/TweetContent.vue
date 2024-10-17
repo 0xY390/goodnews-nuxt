@@ -1,271 +1,272 @@
 <script setup>
-import CustomImage from '@/components/CustomImage/index.vue';
-import CustomVideo from '@/components/CustomVideo/index.vue';
-import TweetContentVote from '@/components/TweetContentVote/index.vue';
-import defaultAvatar from '@/assets/images/default-avatar.jpg';
-import defaultTweet from '@/assets/images/default-tweet.jpg';
-import PhotoDetails from './components/PhotoDetails.vue';
-import { Tippy } from 'vue-tippy';
-import UserCardContent from '@/components/UserCard/content.vue';
-import { blurHashData } from './config';
-import { editTweetData, unlockTweet, getTweetDetail } from '~/api/tweet';
-const { t } = useI18n();
-const route = useRoute();
-const router = useRouter();
+import CustomImage from '@/components/CustomImage/index.vue'
+import CustomVideo from '@/components/CustomVideo/index.vue'
+import TweetContentVote from '@/components/TweetContentVote/index.vue'
+import defaultAvatar from '@/assets/images/default-avatar.jpg'
+import defaultTweet from '@/assets/images/default-tweet.jpg'
+import PhotoDetails from './components/PhotoDetails.vue'
+import { Tippy } from 'vue-tippy'
+import UserCardContent from '@/components/UserCard/content.vue'
+import { blurHashData } from './config'
+import { editTweetData, unlockTweet, getTweetDetail } from '~/api/tweet'
+const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 const props = defineProps({
   status: {
     type: Object,
-    default: () => ({}),
+    default: () => ({})
   },
   showMedia: {
     type: Boolean,
-    default: true,
-  },
-});
-const userInfo = getUser();
+    default: true
+  }
+})
+const userInfo = getUser()
 
 // 是不是本人的推文
-const isSelf = computed(() => userInfo.value?.id === props.status.account.id);
-import { useLoginModalStore } from '@/stores/loginModal';
-const loginModalStore = useLoginModalStore();
+const isSelf = computed(() => userInfo.value?.id === props.status.account.id)
+import { useLoginModalStore } from '@/stores/loginModal'
+const loginModalStore = useLoginModalStore()
 
 const getSensitive = () => {
   if (getUser().value?.is_display_sensitive === 1) {
-    return false;
+    return false
   }
   if (props.status.is_sensitive === 1) {
-    return true;
+    return true
   }
-  return false;
-};
-const isSensitive = ref(getSensitive());
+  return false
+}
+const isSensitive = ref(getSensitive())
 const showSensitive = () => {
-  isSensitive.value = false;
-};
+  isSensitive.value = false
+}
 const hideSensitive = () => {
-  isSensitive.value = true;
-};
-provide('isSensitive', isSensitive);
+  isSensitive.value = true
+}
+provide('isSensitive', isSensitive)
 
-import { deepClone } from '~/utils';
+import { deepClone } from '~/utils'
 const mergeProps = (config, data) => {
-  const resultData = deepClone(data);
+  const resultData = deepClone(data)
   if (resultData.thumbnail_height === undefined) {
-    resultData.thumbnail_height = resultData.height;
+    resultData.thumbnail_height = resultData.height
   }
   if (resultData.thumbnail_width === undefined) {
-    resultData.thumbnail_width = resultData.width;
+    resultData.thumbnail_width = resultData.width
   }
-  Object.keys(config).forEach((key) => {
+  Object.keys(config).forEach(key => {
     if (resultData[key] === null) {
-      resultData[key] = config[key];
+      resultData[key] = config[key]
     }
-  });
-  return resultData;
-};
-const tweetData = computed(() => props.status);
-const emits = defineEmits(['reTweet', 'goDetail']);
-const reTweet = (data) => {
-  emits('reTweet', data);
-};
+  })
+  return resultData
+}
+const tweetData = computed(() => props.status)
+const emits = defineEmits(['reTweet', 'goDetail'])
+const reTweet = data => {
+  emits('reTweet', data)
+}
 const goDetail = () => {
-  emits('goDetail');
-};
+  emits('goDetail')
+}
 
 const renderAvatar = (attachment, isSmall = false) => {
-  const url = attachment.url || attachment.remote_url;
+  const url = attachment.url || attachment.remote_url
   if (url || attachment.thumbnail_url) {
-    const thumbnail_url = attachment.thumbnail_url || url;
-    return isSmall ? thumbnail_url : url;
+    const thumbnail_url = attachment.thumbnail_url || url
+    return isSmall ? thumbnail_url : url
   } else {
-    return '';
+    return ''
   }
-};
-const dialogVisible = ref(false);
-const photoDetailsDom = ref(null);
-const popStateHandler = (e) => {
+}
+const dialogVisible = ref(false)
+const photoDetailsDom = ref(null)
+const popStateHandler = e => {
   if (e.type === 'popstate' && dialogVisible.value) {
-    window.removeEventListener('popstate', popStateHandler);
-    closeDialog();
+    window.removeEventListener('popstate', popStateHandler)
+    closeDialog()
   }
-};
-import useVideos from '@/hooks/useVideos';
+}
+import useVideos from '@/hooks/useVideos'
 const previewImage = async (image, i) => {
   if (isSensitive.value) {
-    return;
+    return
   }
 
   // 暂停所有视频播放
-  useVideos().pauseAllVideos();
-  dialogVisible.value = true;
-  await nextTick();
-  photoDetailsDom.value && photoDetailsDom.value.handleCarousel(i + 1);
-  history.pushState({ modalOpen: true }, '');
-  window.addEventListener('popstate', popStateHandler);
-};
+  useVideos().pauseAllVideos()
+  dialogVisible.value = true
+  await nextTick()
+  photoDetailsDom.value && photoDetailsDom.value.handleCarousel(i + 1)
+  history.pushState({ modalOpen: true }, '')
+  window.addEventListener('popstate', popStateHandler)
+}
 const popClose = async () => {
-  dialogVisible.value = false;
-};
+  dialogVisible.value = false
+}
 onUnmounted(() => {
-  window.removeEventListener('popstate', popStateHandler);
-});
+  window.removeEventListener('popstate', popStateHandler)
+})
 const closeDialog = () => {
   if (history?.state?.modalOpen) {
-    history.back();
+    history.back()
   }
-};
-const tweetHtml = ref(null);
-const tweetContent = ref(null);
+}
+const tweetHtml = ref(null)
+const tweetContent = ref(null)
 // 文本是否超过三行
-const tweetMode = inject('tweetMode', ref('default'));
+const tweetMode = inject('tweetMode', ref('default'))
 // 是否是推文详情页 - 在推文详情页,不显示展开按钮
-const isTweetDetail = computed(() => tweetMode.value === 'detail');
+const isTweetDetail = computed(() => tweetMode.value === 'detail')
 // 是否查看更多
-const isExceeded = ref(isTweetDetail.value);
+const isExceeded = ref(isTweetDetail.value)
 const isTextExceeded = computed(() => {
   if (tweetHtml.value) {
     // 文字内容是否超过3行
-    const isShowExceeded = tweetHtml.value.scrollHeight > tweetHtml.value.clientHeight;
-    return isShowExceeded && !isExceeded.value;
+    const isShowExceeded =
+      tweetHtml.value.scrollHeight > tweetHtml.value.clientHeight
+    return isShowExceeded && !isExceeded.value
   }
-  return false;
-});
+  return false
+})
 const showMore = () => {
-  isExceeded.value = true;
-};
+  isExceeded.value = true
+}
 const hideMoreTtmlStyle = computed(() => {
   const hideObj = {
     overflow: 'hidden',
     display: '-webkit-box',
     '-webkit-line-clamp': '3',
-    '-webkit-box-orient': 'vertical',
-  };
-  return !isExceeded.value ? hideObj : {};
-});
-const triggerTarget = ref(null);
-const triggerAccount = ref(null);
-const userCardContentRef = ref(null);
+    '-webkit-box-orient': 'vertical'
+  }
+  return !isExceeded.value ? hideObj : {}
+})
+const triggerTarget = ref(null)
+const triggerAccount = ref(null)
+const userCardContentRef = ref(null)
 onMounted(async () => {
-  tweetHtml.value.addEventListener('mouseover', async (e) => {
+  tweetHtml.value.addEventListener('mouseover', async e => {
     if (e.target.classList.contains('mention')) {
-      const currentUsername = e.target.href.split('/').pop();
-      const currentAccount = props.status.mentions.find((account) => {
-        return account.acct === currentUsername;
-      });
+      const currentUsername = e.target.href.split('/').pop()
+      const currentAccount = props.status.mentions.find(account => {
+        return account.acct === currentUsername
+      })
       if (currentAccount) {
-        triggerAccount.value = currentAccount;
-        triggerTarget.value = e.target;
+        triggerAccount.value = currentAccount
+        triggerTarget.value = e.target
       }
     }
-  });
-  await nextTick();
-  const elements = tweetHtml.value.querySelectorAll('*');
-  elements.forEach((element) => {
+  })
+  await nextTick()
+  const elements = tweetHtml.value.querySelectorAll('*')
+  elements.forEach(element => {
     if (element.tagName === 'A') {
-      element.addEventListener('click', (e) => {
-        e.stopPropagation();
+      element.addEventListener('click', e => {
+        e.stopPropagation()
 
         if (e.target.href.includes(location.host)) {
-          e.preventDefault();
-          router.push(e.target.pathname);
+          e.preventDefault()
+          router.push(e.target.pathname)
         } else {
-          e.preventDefault();
-          window.open(e.target.href, '_blank');
+          e.preventDefault()
+          window.open(e.target.href, '_blank')
         }
-      });
+      })
     }
-  });
-});
+  })
+})
 
-const styleResult = computed((index) => {
+const styleResult = computed(index => {
   // 如果是1个图片，则占据100%的宽度和高度
   // 如果是2个图片，则各自占据一半的宽度
   // 如果是3个图片，则第一张图片占据一半的宽度，100%的高度。后面两张图片占据剩下的一半的宽度，各自占据50%的高度
   // 如果是4个图片，则分别占据50%的宽度和50%的高度
   // 没有其他情况
-  const length = fileList.value?.length;
-  let result = [];
+  const length = fileList.value?.length
+  let result = []
   if (length === 1) {
     result = [
       {
         width: '100%',
         height: '100%',
-        inset: 'auto 1px auto 1px',
-      },
-    ];
+        inset: 'auto 1px auto 1px'
+      }
+    ]
   } else if (length === 2) {
     result = [
       {
         width: 'calc(50% - 1px)',
         height: '100%',
-        inset: 'auto auto auto auto',
+        inset: 'auto auto auto auto'
       },
       {
         width: 'calc(50% - 1px)',
         height: '100%',
-        inset: 'auto 0 auto auto',
-      },
-    ];
+        inset: 'auto 0 auto auto'
+      }
+    ]
   } else if (length === 3) {
     result = [
       {
         width: 'calc(50% - 1px)',
         height: '100%',
-        inset: '0 auto 0 0',
+        inset: '0 auto 0 0'
       },
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: '0 0 auto auto',
+        inset: '0 0 auto auto'
       },
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: 'auto 0 0 auto',
-      },
-    ];
+        inset: 'auto 0 0 auto'
+      }
+    ]
   } else if (length === 4) {
     result = [
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: '0 auto auto 0',
+        inset: '0 auto auto 0'
       },
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: '0 0 auto auto',
+        inset: '0 0 auto auto'
       },
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: 'auto auto 0 0',
+        inset: 'auto auto 0 0'
       },
       {
         width: 'calc(50% - 1px)',
         height: 'calc(50% - 1px)',
-        inset: 'auto 0 0 auto',
-      },
-    ];
+        inset: 'auto 0 0 auto'
+      }
+    ]
   }
-  return result;
-});
+  return result
+})
 
 const fileList = computed(() => {
   if (props.status.attachments?.length && props.showMedia) {
-    return props.status.attachments?.filter((item, i) => i < 4);
+    return props.status.attachments?.filter((item, i) => i < 4)
   }
 
-  return [];
-});
+  return []
+})
 
-import { useArticleStore } from '@/stores/articleStore';
-const articleStore = useArticleStore();
+import { useArticleStore } from '@/stores/articleStore'
+const articleStore = useArticleStore()
 const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
   if (isIntersecting) {
-    articleStore.addArticleId(props.status.id);
+    articleStore.addArticleId(props.status.id)
   }
-});
+})
 </script>
 
 <template>
@@ -282,34 +283,72 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     >
       <template #content>
         <div style="padding: 10px">
-          <UserCardContent v-if="triggerAccount" :account="triggerAccount"></UserCardContent>
+          <UserCardContent
+            v-if="triggerAccount"
+            :account="triggerAccount"
+          ></UserCardContent>
         </div>
       </template>
     </tippy>
-    <div class="tweet-html" ref="tweetHtml" @click="goDetail" :style="hideMoreTtmlStyle">
+    <div
+      class="tweet-html"
+      ref="tweetHtml"
+      @click="goDetail"
+      :style="hideMoreTtmlStyle"
+    >
       <div
         ref="tweetContent"
-        v-html="tweetData.origin_status?.content_rendered || tweetData.content_rendered || tweetData.content"
+        v-html="
+          tweetData.origin_status?.content_rendered ||
+          tweetData.content_rendered ||
+          tweetData.content
+        "
         v-tweetContontEmoji="tweetData"
       ></div>
     </div>
-    <a-link v-if="isTextExceeded" class="showmore" @click.stop="showMore">{{ t('tweet.showMore') }}</a-link>
-    <nuxt-link class="nuxt-link-href" :to="`/user/${tweetData.account.acct}/status/${tweetData.id}`">{{ t('tweet.viewDetail') }}</nuxt-link>
+    <a-link v-if="isTextExceeded" class="showmore" @click.stop="showMore">{{
+      t('tweet.showMore')
+    }}</a-link>
+    <nuxt-link
+      class="nuxt-link-href"
+      :to="`/user/${tweetData.account.acct}/status/${tweetData.id}`"
+      >{{ t('tweet.viewDetail') }}</nuxt-link
+    >
     <div class="vote-block" v-if="status.polls">
       <TweetContentVote :data="status" @reTweet="reTweet"></TweetContentVote>
     </div>
-    <PreviewCard v-if="status.preview_card" :previewCard="status.preview_card"></PreviewCard>
+    <PreviewCard
+      v-if="status.preview_card"
+      :previewCard="status.preview_card"
+    ></PreviewCard>
 
     <div @click.stop class="media-frame" v-if="showMedia && fileList?.length">
       <div class="media-sensitive" v-if="status.is_sensitive === 1">
-        <div @click.stop="showSensitive" v-if="isSensitive">{{ t('tweet.showSensitiveContent') }}</div>
+        <div @click.stop="showSensitive" v-if="isSensitive">
+          {{ t('tweet.showSensitiveContent') }}
+        </div>
         <div @click.stop="hideSensitive" v-else>{{ t('tweet.hide') }}</div>
       </div>
       <template v-if="fileList.length === 1">
-        <div class="media-gallery" @click.stop :style="fileList.length == 1 ? '--height : auto' : ''">
-          <div class="media-gallery__item" :key="attachment.id" v-for="(attachment, i) in fileList" style="position: static">
+        <div
+          class="media-gallery"
+          @click.stop
+          :style="fileList.length == 1 ? '--height : auto' : ''"
+        >
+          <div
+            class="media-gallery__item"
+            :key="attachment.id"
+            v-for="(attachment, i) in fileList"
+            style="position: static"
+          >
             <div class="video-box" v-if="attachment.file_type == 4">
-              <CustomVideo class="w-full" :src="attachment.url" controls :poster="attachment.thumbnail_url" @click.stop></CustomVideo>
+              <CustomVideo
+                class="w-full"
+                :src="attachment.url"
+                controls
+                :poster="attachment.thumbnail_url"
+                @click.stop
+              ></CustomVideo>
             </div>
             <template v-else>
               <CustomImage
@@ -327,10 +366,25 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
       </template>
 
       <template v-else>
-        <div class="media-gallery media-gallerys" @click.stop :style="fileList.length == 1 ? '--height : auto' : ''">
-          <div class="media-gallery__item" :key="attachment.id" v-for="(attachment, i) in fileList" :style="styleResult[i]">
+        <div
+          class="media-gallery media-gallerys"
+          @click.stop
+          :style="fileList.length == 1 ? '--height : auto' : ''"
+        >
+          <div
+            class="media-gallery__item"
+            :key="attachment.id"
+            v-for="(attachment, i) in fileList"
+            :style="styleResult[i]"
+          >
             <template v-if="attachment.file_type == 4">
-              <CustomVideo class="w-full h-full" :src="attachment.url" controls :poster="attachment.thumbnail_url" @click.stop></CustomVideo>
+              <CustomVideo
+                class="w-full h-full"
+                :src="attachment.url"
+                controls
+                :poster="attachment.thumbnail_url"
+                @click.stop
+              ></CustomVideo>
             </template>
             <template v-else>
               <CustomImage
@@ -347,7 +401,7 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
       </template>
     </div>
 
-    <ClientOnlyAModal
+    <a-modal
       v-if="dialogVisible"
       v-model:visible="dialogVisible"
       :footer="false"
@@ -357,8 +411,12 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
       modal-class="photo-detail-modal"
       @close="closeDialog"
     >
-      <PhotoDetails ref="photoDetailsDom" :status="props.status" @close="popClose"></PhotoDetails>
-    </ClientOnlyAModal>
+      <PhotoDetails
+        ref="photoDetailsDom"
+        :status="props.status"
+        @close="popClose"
+      ></PhotoDetails>
+    </a-modal>
   </div>
 </template>
 

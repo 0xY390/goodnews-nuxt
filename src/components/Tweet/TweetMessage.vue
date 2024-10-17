@@ -1,9 +1,9 @@
 <script setup>
-import Avatar from '@/components/Avatar/index.vue';
-import MoreHandle from '@/components/MoreHandle/index.vue';
-import EmbedTweet from '@/components/EmbedTweet/index.vue';
-import { useRouterStore } from '@/stores/router';
-const { t } = useI18n();
+import Avatar from '@/components/Avatar/index.vue'
+import MoreHandle from '@/components/MoreHandle/index.vue'
+import EmbedTweet from '@/components/EmbedTweet/index.vue'
+import { useRouterStore } from '@/stores/router'
+const { t } = useI18n()
 const props = defineProps({
   // 推文
   status: { type: Object, default: () => ({}) },
@@ -14,91 +14,108 @@ const props = defineProps({
   // 是否是懒加载
   isLazy: { type: Boolean, default: false },
   // 是否显示更多操作
-  showMoreHandle: { type: Boolean, default: true },
-});
+  showMoreHandle: { type: Boolean, default: true }
+})
 
-const emits = defineEmits(['reTweet', 'delete']);
+const emits = defineEmits(['reTweet', 'delete'])
 const tweetData = computed({
   get: () => {
-    return props.status;
+    return props.status
   },
-  set: (val) => {
-    emits('reTweet', val);
-  },
-});
+  set: val => {
+    emits('reTweet', val)
+  }
+})
 const isReTweet = computed(() => {
-  return props.status?.origin_status !== null && props.status?.origin_status !== undefined;
-});
+  return (
+    props.status?.origin_status !== null &&
+    props.status?.origin_status !== undefined
+  )
+})
 const deleteTweet = () => {
-  emits('delete', props.index);
-};
+  emits('delete', props.index)
+}
 
-const routerStore = useRouterStore();
+const routerStore = useRouterStore()
 
-const { tweetList, accountInfo } = storeToRefs(routerStore);
+const { tweetList, accountInfo } = storeToRefs(routerStore)
 
 // 进入推文详情
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
 const goDetail = () => {
-  if (route.name === 'tweet-status' && route.params.id == props.status.id && route.params.acct === props.status.account.acct) {
-    console.log('已经在本详情里了');
-    return;
+  if (
+    route.name === 'tweet-status' &&
+    route.params.id == props.status.id &&
+    route.params.acct === props.status.account.acct
+  ) {
+    console.log('已经在本详情里了')
+    return
   }
 
-  window.deleteTweet = deleteTweet;
+  window.deleteTweet = deleteTweet
 
   // 缓存推文数据
   if (tweetList.value) {
-    tweetList.value[props.status.id] = tweetData.value;
+    tweetList.value[props.status.id] = tweetData.value
   } else {
     tweetList.value = {
-      [tweetData.value.id]: tweetData.value,
-    };
+      [tweetData.value.id]: tweetData.value
+    }
   }
   router.push({
     name: 'tweet-status',
     params: {
       acct: props.status.account.acct,
-      id: props.status.id,
-    },
-  });
-};
+      id: props.status.id
+    }
+  })
+}
 
 // 嵌入帖子
-const embedPath = ref(`embed/${props.status?.account?.acct}/status/${props.status?.id}`);
-const showEmbedTweet = ref(false);
+const embedPath = ref(
+  `embed/${props.status?.account?.acct}/status/${props.status?.id}`
+)
+const showEmbedTweet = ref(false)
 
 // 更新推文
-const tweetUpdate = (status) => {
-  tweetData.value = status;
-};
-const isShowPin = inject('isShowPin', false);
+const tweetUpdate = status => {
+  tweetData.value = status
+}
+const isShowPin = inject('isShowPin', false)
 
 // 显示已过滤的推文
 const handleFilterTweetShow = () => {
-  const item = deepClone(props.status);
-  item.filter = null;
-  emits('reTweet', item);
-};
+  const item = deepClone(props.status)
+  item.filter = null
+  emits('reTweet', item)
+}
 
-const goRouter = (account) => {
-  setRouter(account);
-  gotoAccount(account);
-};
+const goRouter = account => {
+  setRouter(account)
+  gotoAccount(account)
+}
 
-const setRouter = (account) => {
-  routerStore.updateAccountInfo(account);
-};
-const gotoAccount = (account) => {
-  router.push(`/user/${account.acct}`);
-};
+const setRouter = account => {
+  routerStore.updateAccountInfo(account)
+}
+const gotoAccount = account => {
+  router.push(`/user/${account.acct}`)
+}
 </script>
 <template>
-  <div class="tweet-item" ref="tweetRef" :class="{ status_reTweet: isReTweet, isReply: tweetData.replyLineBottom }" v-if="tweetData" @click="goDetail">
+  <div
+    class="tweet-item"
+    ref="tweetRef"
+    :class="{ status_reTweet: isReTweet, isReply: tweetData.replyLineBottom }"
+    v-if="tweetData"
+    @click="goDetail"
+  >
     <template v-if="status.reblog_id && status?.filter?.act !== 1">
-      <div class="reblog"><Icon name="zondicons:repost" />{{ $t('tweet.forwarded') }}</div>
+      <div class="reblog">
+        <Icon name="zondicons:repost" />{{ $t('tweet.forwarded') }}
+      </div>
     </template>
     <template v-if="tweetData.pinned_at && isShowPin">
       <div class="tweet-item-pin">
@@ -107,8 +124,12 @@ const gotoAccount = (account) => {
       </div>
     </template>
     <div class="tweet-filter" v-show="status?.filter?.act === 1" @click.stop>
-      <span class="text">{{ $t('tweet.filtered') }}: {{ status?.filter?.title }}. </span>
-      <a-link type="text" @click.stop="handleFilterTweetShow">{{ $t('tweet.keepShow') }}</a-link>
+      <span class="text"
+        >{{ $t('tweet.filtered') }}: {{ status?.filter?.title }}.
+      </span>
+      <a-link type="text" @click.stop="handleFilterTweetShow">{{
+        $t('tweet.keepShow')
+      }}</a-link>
     </div>
     <div class="tweet-container" v-show="!(status?.filter?.act === 1)">
       <div class="tweet-avatar" :class="{ 'tweet-avatar_retweet': isReTweet }">
@@ -117,18 +138,29 @@ const gotoAccount = (account) => {
         <template v-if="isReTweet">
           <div class="tweet-avatar-block">
             <UserCard :account="tweetData.account">
-              <Avatar size="40" :account="tweetData.account" @click.stop="goRouter(tweetData.account)" />
+              <Avatar
+                size="40"
+                :account="tweetData.account"
+                @click.stop="goRouter(tweetData.account)"
+              />
             </UserCard>
           </div>
           <div class="retweet-avatar-block">
             <UserCard :account="tweetData.origin_status?.account">
-              <Avatar size="24" :account="tweetData.origin_status?.account" @click.stop="goRouter(tweetData.origin_status?.account)" />
+              <Avatar
+                size="24"
+                :account="tweetData.origin_status?.account"
+                @click.stop="goRouter(tweetData.origin_status?.account)"
+              />
             </UserCard>
           </div>
         </template>
         <template v-else>
           <UserCard :account="tweetData.account">
-            <Avatar :account="tweetData.account" @click.stop="goRouter(tweetData.account)"></Avatar>
+            <Avatar
+              :account="tweetData.account"
+              @click.stop="goRouter(tweetData.account)"
+            ></Avatar>
           </UserCard>
         </template>
       </div>
@@ -136,45 +168,62 @@ const gotoAccount = (account) => {
         <div class="tweet-header">
           <UserCard :account="tweetData.account" class="usercard">
             <div class="userinfo" @click.stop="goRouter(tweetData.account)">
-              <nuxt-link class="userinfo-name" :to="`/user/${tweetData.account.acct}`" @click.stop="setRouter(tweetData.account)">
+              <nuxt-link
+                class="userinfo-name"
+                :to="`/user/${tweetData.account.acct}`"
+                @click.stop="setRouter(tweetData.account)"
+              >
                 {{ tweetData.account?.display_name }}
               </nuxt-link>
               <div class="userinfo-desc">
-                <nuxt-link class="user-info-desc-acct" :to="`/user/${status.account.acct}`" @click.stop="setRouter(tweetData.account)">
+                <nuxt-link
+                  class="user-info-desc-acct"
+                  :to="`/user/${status.account.acct}`"
+                  @click.stop="setRouter(tweetData.account)"
+                >
                   {{ tweetData.account?.acct }} ·
                 </nuxt-link>
-                <client-only>
-                  {{ $dayjs(tweetData.published_at).fromNow() }}
-                </client-only>
+                {{ $dayjs(tweetData.published_at).fromNow() }}
               </div>
             </div>
           </UserCard>
-          <ClientOnly>
-            <MoreHandle
-              v-if="showMoreHandle"
-              :status="tweetData"
-              @delete="deleteTweet"
-              :index="props.index"
-              @embed="showEmbedTweet = true"
-              @reTweet="tweetUpdate"
-              @click.stop
-            ></MoreHandle>
-          </ClientOnly>
+          <MoreHandle
+            v-if="showMoreHandle"
+            :status="tweetData"
+            @delete="deleteTweet"
+            :index="props.index"
+            @embed="showEmbedTweet = true"
+            @reTweet="tweetUpdate"
+            @click.stop
+          ></MoreHandle>
         </div>
-        <div class="tweet-acct" style="margin-top: -8px">@{{ tweetData.account.acct }}</div>
+        <div class="tweet-acct" style="margin-top: -8px">
+          @{{ tweetData.account.acct }}
+        </div>
         <div class="tweet-body">
-          <TweetContent :status="tweetData" :showMedia="true" @goDetail="goDetail" @reTweet="tweetUpdate"></TweetContent>
-          <ClientOnly>
-            <TweetBar v-model="tweetData" @goDetail="goDetail" @click.stop></TweetBar>
-          </ClientOnly>
+          <TweetContent
+            :status="tweetData"
+            :showMedia="true"
+            @goDetail="goDetail"
+            @reTweet="tweetUpdate"
+          ></TweetContent>
+          <TweetBar
+            v-model="tweetData"
+            @goDetail="goDetail"
+            @click.stop
+          ></TweetBar>
         </div>
-        <ClientOnly v-if="showEmbedTweet">
-          <EmbedTweet v-if="embedPath" :path="embedPath" v-model:show="showEmbedTweet" />
-        </ClientOnly>
+        <EmbedTweet
+          v-if="embedPath && showEmbedTweet"
+          :path="embedPath"
+          v-model:show="showEmbedTweet"
+        />
       </div>
     </div>
   </div>
-  <div class="tweet-item tweet-deleted" v-else>{{ t('tweet.tweetDeleted') }}</div>
+  <div class="tweet-item tweet-deleted" v-else>
+    {{ t('tweet.tweetDeleted') }}
+  </div>
 </template>
 <style scoped lang="scss">
 .tweet-item {

@@ -22,7 +22,6 @@ const notificationsNumStore = useNotificationsNumStore()
 const { user: userInfo } = storeToRefs(userStore)
 const { notificationsNum } = storeToRefs(notificationsNumStore)
 // const userInfo = getUser()
-console.log(`output->loginModalStore`, loginModalStore)
 watchEffect(async () => {
   if (!isShowLogin.value && userInfo.value) {
     const data = await getNum()
@@ -390,7 +389,6 @@ const backTopTarget = e => {
 }
 import useLogo from '@/hooks/useLogo'
 const { logo } = useLogo()
-console.log(`output->logo`, logo)
 </script>
 
 <template>
