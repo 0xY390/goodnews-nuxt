@@ -138,3 +138,19 @@ export const unfollow = (data) => {
     data
   });
 };
+
+// 用户信息
+export const getUserInfo = (acct) => {
+  return request({
+    url: `/_api/v1/account/${acct}`,
+    method: 'GET',
+  });
+};
+// 该用户的推文
+export const getUserTweets = (acct, params) => {
+  return request({
+    url: `/_api/v1/statuses/${acct}`,
+    method: 'GET',
+    params,
+  });
+};

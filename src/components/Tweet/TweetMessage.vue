@@ -115,12 +115,12 @@ const gotoAccount = account => {
   >
     <template v-if="status.reblog_id && status?.filter?.act !== 1">
       <div class="reblog">
-        <Icon name="zondicons:repost" />{{ $t('tweet.forwarded') }}
+        <Icon icon="zondicons:repost" />{{ $t('tweet.forwarded') }}
       </div>
     </template>
     <template v-if="tweetData.pinned_at && isShowPin">
       <div class="tweet-item-pin">
-        <Icon name="icon-park-solid:pin" />
+        <Icon icon="icon-park-solid:pin" />
         <div class="text">{{ t('tweet.pinned') }}</div>
       </div>
     </template>

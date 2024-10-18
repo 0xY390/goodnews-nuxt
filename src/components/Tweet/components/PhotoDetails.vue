@@ -157,7 +157,7 @@ const renderAvatar = (attachment, isSmall = false) => {
   <div class="pages">
     <div class="photo-area">
       <div class="close" @click="goBack">
-        <Icon name="tdesign:close-circle-filled" />
+        <Icon icon="tdesign:close-circle-filled" />
       </div>
       <div class="right-btn" v-if="route.name !== 'tweet-status'">
         <a-dropdown>

@@ -23,12 +23,12 @@
         >
           <div class="left">
             <div class="left-icon">
-              <Icon :name="item.icon" />
+              <Icon :icon="item.icon" />
             </div>
             <div class="left-label">{{ item.label }}</div>
           </div>
           <div class="right" v-show="item.value === value">
-            <Icon name="tabler:check" />
+            <Icon icon="tabler:check" />
           </div>
         </div>
       </div>

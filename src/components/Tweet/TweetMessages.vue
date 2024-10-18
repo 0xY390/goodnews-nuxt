@@ -15,9 +15,6 @@ const props = defineProps({
   // 数据是否加载完毕 默认false  如果为true则不会触发加载更多
   finished: { type: Boolean, default: false }
 })
-watchEffect(() => {
-  console.log(`output->props.tweetList`, props.tweetList)
-})
 
 const slots = defineSlots()
 const hasNullTextSlot = computed(() => Object.keys(slots).includes('nullText'))
@@ -26,7 +23,6 @@ const tweets = ref([])
 
 // 初始化推文的上下文回复关系
 function initTweetList() {
-  console.log(`output->回来了`, props.tweetList)
   tweets.value = props.tweetList.reduce((acc, cur) => {
     if (acc.length > 0) {
       acc[acc.length - 1].replyLineBottom = false

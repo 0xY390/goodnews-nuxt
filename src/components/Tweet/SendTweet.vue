@@ -12,7 +12,6 @@ import SendTweetEditor from '@/components/SendTweetEditor/index.vue'
 const { t } = useI18n()
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
-console.log(`output->sendTweet userInfo`, userInfo)
 
 // 是否是敏感用户
 const isSensitiveUser = computed(() => {

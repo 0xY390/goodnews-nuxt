@@ -99,7 +99,7 @@ const historyList = ref(searchStore.history)
       >
         <template #suffix>
           <div class="icon-box" @click="search">
-            <Icon name="material-symbols:search"></Icon>
+            <Icon icon="material-symbols:search"></Icon>
           </div>
         </template>
       </a-input>
@@ -146,7 +146,7 @@ const historyList = ref(searchStore.history)
                     }}</a-tag>
                   </div>
                   <div class="remove-box" @click.stop="removeHistory(i)">
-                    <Icon name="material-symbols:close-small-outline" />
+                    <Icon icon="material-symbols:close-small-outline" />
                   </div>
                 </div>
               </div>
