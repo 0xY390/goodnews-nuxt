@@ -1,15 +1,17 @@
-import { manualFetch } from '../base';
+import request from '@/utils/request'
 
 // 获取服务器招牌
 export const getSettingBranding = () => {
-  return manualFetch('/_api/admin/settings/branding', {
+  return request({
+    url: '/_api/admin/settings/branding',
     method: 'GET',
   });
 };
 
 // 设置获取服务器招牌
 export const setSettingBranding = (data) => {
-  return manualFetch('/_api/admin/settings/branding', {
+  return request({
+    url: '/_api/admin/settings/branding',
     method: 'PUT',
     body: data,
   });
@@ -17,14 +19,16 @@ export const setSettingBranding = (data) => {
 
 // 获取服务器关于
 export const getSettingAbout = () => {
-  return manualFetch('/_api/admin/settings/about', {
+  return request({
+    url: '/_api/admin/settings/about',
     method: 'GET',
   });
 };
 
 // 设置服务器关于
 export const setSettingAbout = (data) => {
-  return manualFetch('/_api/admin/settings/about', {
+  return request({
+    url: '/_api/admin/settings/about',
     method: 'PUT',
     body: data,
   });
@@ -32,7 +36,8 @@ export const setSettingAbout = (data) => {
 
 // 获取服务器敏感内容
 export const getSettingSitive = async () => {
-  let res = await manualFetch('/_api/admin/settings/branding', {
+  let res = await request({
+    url: '/_api/admin/settings/branding',
     method: 'GET',
   });
   if (res.receive_remote_sensitive == '1') {
@@ -60,7 +65,8 @@ export const setSettingSitive = (data) => {
       formData[key] = '0';
     }
   }
-  return manualFetch('/_api/admin/settings/branding', {
+  return request({
+    url: '/_api/admin/settings/branding',
     method: 'PUT',
     body: formData,
   });

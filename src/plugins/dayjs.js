@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime' // 相对时间处理插件
 // 时区
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-const plugin = {
+const dayjsPlugin = {
   install(app) {
     let userTimeZone = 'Asia/Shanghai' // 默认时区
     if (window.Intl) {
@@ -27,7 +27,8 @@ const plugin = {
       return dayjs(date).tz(userTimeZone).fromNow()
     }
     app.config.globalProperties.$dayjs = dayjs
+    app.provide('dayjs', dayjs)
   }
 }
 
-export default plugin
+export default dayjsPlugin

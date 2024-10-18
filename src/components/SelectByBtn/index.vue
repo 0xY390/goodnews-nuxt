@@ -1,48 +1,56 @@
 <template>
-  <client-only>
-    <a-trigger auto-fit-position trigger="click" v-model:popup-visible="visible" scroll-to-close>
-      <a-tooltip :content="props.tips" mini position="top">
-        <a-button class="frame-btn" type="text" @click="visible = true">
-          <slot></slot>
-        </a-button>
-      </a-tooltip>
-      <template #content>
-        <div class="menu">
-          <div class="title">
-            <div class="title-top">{{ props.title }}</div>
+  <a-trigger
+    auto-fit-position
+    trigger="click"
+    v-model:popup-visible="visible"
+    scroll-to-close
+  >
+    <a-tooltip :content="props.tips" mini position="top">
+      <a-button class="frame-btn" type="text" @click="visible = true">
+        <slot></slot>
+      </a-button>
+    </a-tooltip>
+    <template #content>
+      <div class="menu">
+        <div class="title">
+          <div class="title-top">{{ props.title }}</div>
+        </div>
+        <div
+          class="menuitem"
+          v-for="(item, index) in list"
+          :key="item.value"
+          @click="handleClick(index)"
+        >
+          <div class="left">
+            <div class="left-icon">
+              <Icon :name="item.icon" />
+            </div>
+            <div class="left-label">{{ item.label }}</div>
           </div>
-          <div class="menuitem" v-for="(item, index) in list" :key="item.value" @click="handleClick(index)">
-            <div class="left">
-              <div class="left-icon">
-                <Icon :name="item.icon" />
-              </div>
-              <div class="left-label">{{ item.label }}</div>
-            </div>
-            <div class="right" v-show="item.value === value">
-              <Icon name="tabler:check" />
-            </div>
+          <div class="right" v-show="item.value === value">
+            <Icon name="tabler:check" />
           </div>
         </div>
-      </template>
-    </a-trigger>
-  </client-only>
+      </div>
+    </template>
+  </a-trigger>
 </template>
 
 <script setup>
-const value = defineModel();
+const value = defineModel()
 const props = defineProps({
   title: { type: String, default: '' },
   options: { type: Array, default: () => [] },
-  tips: { type: String, default: '' },
-});
-const list = ref(props.options);
-const handleClick = (index) => {
-  value.value = list.value[index].value;
+  tips: { type: String, default: '' }
+})
+const list = ref(props.options)
+const handleClick = index => {
+  value.value = list.value[index].value
   setTimeout(() => {
-    visible.value = false;
-  }, 100);
-};
-const visible = ref(false);
+    visible.value = false
+  }, 100)
+}
+const visible = ref(false)
 </script>
 
 <style lang="scss" scoped>

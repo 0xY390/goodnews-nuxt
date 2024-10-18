@@ -1,5 +1,8 @@
-import { swipe } from './swipe'
 
 export default {
-  swipe
+  tweetContontEmoji: () => import('./tweetContontEmoji'),
+  accountName: () => import('./accountName'),
+  onlyPlay: () => import('./onlyPlay'),
+  swipe: () => import('./swipe'),
+  timelineRestrain: () => import('./timelineRestrain'),
 }

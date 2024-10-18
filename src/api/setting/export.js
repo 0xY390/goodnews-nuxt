@@ -1,7 +1,7 @@
-import { manualFetch } from '../base';
-
+import request from '@/utils/request'
 export const getExportsList = (params) => {
-  return manualFetch('/_api/admin/exports', {
+  return request({
+    url: '/_api/admin/exports',
     method: 'get',
     params,
   });
@@ -9,14 +9,16 @@ export const getExportsList = (params) => {
 
 // 导出请求的列表
 export const requestData = (params) => {
-  return manualFetch('/_api/admin/exports/request', {
+  return request({
+    url: '/_api/admin/exports/request',
     method: 'get',
   });
 };
 
 // 下载存档
 export const downloadArchive = (id) => {
-  return manualFetch(`/_api/admin/backups/${id}/download`, {
+  return request({
+    url: `/_api/admin/backups/${id}/download`,
     method: 'get',
   });
 };

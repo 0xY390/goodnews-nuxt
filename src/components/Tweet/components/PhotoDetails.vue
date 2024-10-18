@@ -1,106 +1,110 @@
 <script setup>
-import CustomImage from '@/components/CustomImage/index.vue';
-import CustomVideo from '@/components/CustomVideo/index.vue';
-import TweetBar from '@/components/Tweet/TweetBar.vue';
-import TweetContent from '@/components/Tweet/TweetContent.vue';
-import UserCard from '@/components/UserCard/index.vue';
-import { Message } from '@arco-design/web-vue';
-const loginModalStore = useLoginModalStore();
-const { t } = useI18n();
-const route = useRoute();
-const router = useRouter();
+import CustomImage from '@/components/CustomImage/index.vue'
+import CustomVideo from '@/components/CustomVideo/index.vue'
+import TweetBar from '@/components/Tweet/TweetBar.vue'
+import TweetContent from '@/components/Tweet/TweetContent.vue'
+import UserCard from '@/components/UserCard/index.vue'
+import { Message } from '@arco-design/web-vue'
+const loginModalStore = useLoginModalStore()
+const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 const props = defineProps({
   status: {
     type: Object,
-    default: () => {},
-  },
-});
-const emits = defineEmits(['close', 'reTweet']);
+    default: () => {}
+  }
+})
+const emits = defineEmits(['close', 'reTweet'])
 
 const goBack = () => {
-  emits('close');
-};
+  emits('close')
+}
 
-const goRouter = (path) => {
-  goBack();
-  router.push(path);
-  return;
-};
+const goRouter = path => {
+  goBack()
+  router.push(path)
+  return
+}
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 
-const carouselDom = ref(null);
+const carouselDom = ref(null)
 watchEffect(() => {
   if (carouselDom.value) {
-    carouselDom.value.$el.addEventListener('click', (e) => {
+    carouselDom.value.$el.addEventListener('click', e => {
       if (typeof e.target.className === 'string') {
-        const ableClass = ['arco-carousel-indicator-item', 'arco-carousel-arrow-right', 'arco-carousel-arrow-left'];
-        const flag = ableClass.some((item) => e.target.className.includes(item));
+        const ableClass = [
+          'arco-carousel-indicator-item',
+          'arco-carousel-arrow-right',
+          'arco-carousel-arrow-left'
+        ]
+        const flag = ableClass.some(item => e.target.className.includes(item))
         if (!flag) {
-          goBack();
-          e.stopPropagation();
+          goBack()
+          e.stopPropagation()
         }
       }
-    });
+    })
   }
-});
-const currentImg = ref(0);
+})
+const currentImg = ref(0)
 
 const tweetData = computed(() => {
-  return props.status;
-});
+  return props.status
+})
 
-const attatchmentList = ref([]);
+const attatchmentList = ref([])
 
 onMounted(() => {
-  attatchmentList.value = tweetData.value.attachments;
-});
+  attatchmentList.value = tweetData.value.attachments
+})
 
-const replyTweet = ref('');
-const tweetByReplyLoading = ref(false);
-import mitt from '~/utils/mitt.js';
-import { replyToTweet } from '@/api/tweet';
+const replyTweet = ref('')
+const tweetByReplyLoading = ref(false)
+import mitt from '~/utils/mitt.js'
+import { replyToTweet } from '@/api/tweet'
 const sendTweetByReply = async () => {
   if (!userStore.userInfo) {
-    loginModalStore.openLoginModal();
-    return;
+    loginModalStore.openLoginModal()
+    return
   }
-  const content = `@${tweetData.value.account.acct} ${replyTweet.value}`;
+  const content = `@${tweetData.value.account.acct} ${replyTweet.value}`
   const params = {
     content: content,
     reply_to_id: tweetData.value.id,
     is_sensitive: false,
-    attachments: [],
-  };
-  tweetByReplyLoading.value = true;
+    attachments: []
+  }
+  tweetByReplyLoading.value = true
   const newReplyTweet = await replyToTweet(params).finally(() => {
-    tweetByReplyLoading.value = false;
-  });
-  console.log('data', newReplyTweet);
-  replyTweetList.value.unshift(newReplyTweet);
-  mitt.emit('submit-tweet', newReplyTweet);
-  Message.success(t('tweet.commentSuccess'));
-  replyTweet.value = '';
-};
+    tweetByReplyLoading.value = false
+  })
+  console.log('data', newReplyTweet)
+  replyTweetList.value.unshift(newReplyTweet)
+  mitt.emit('submit-tweet', newReplyTweet)
+  Message.success(t('tweet.commentSuccess'))
+  replyTweet.value = ''
+}
 
-const replyTweetList = ref([]);
-const tweetLoading = ref(false);
-const tweetFinished = ref(false);
-import { getTweetReplyList } from '@/api/tweet';
-const getReplyTweetListData = async (params) => {
-  tweetLoading.value = true;
+const replyTweetList = ref([])
+const tweetLoading = ref(false)
+const tweetFinished = ref(false)
+import { getTweetReplyList } from '@/api/tweet'
+const getReplyTweetListData = async params => {
+  tweetLoading.value = true
   const tweetParams = {
     acct: tweetData.value.account.acct,
-    id: tweetData.value.id,
-  };
-  const { data } = await getTweetReplyList(tweetParams, params).finally(() => {
-    tweetLoading.value = false;
-  });
-  replyTweetList.value.push(...Array.from(data.value.data));
-  if (replyTweetList.value.length >= Array.from(data.value.data).length) {
-    tweetFinished.value = true;
+    id: tweetData.value.id
   }
-};
+  const { data } = await getTweetReplyList(tweetParams, params).finally(() => {
+    tweetLoading.value = false
+  })
+  replyTweetList.value.push(...Array.from(data.value.data))
+  if (replyTweetList.value.length >= Array.from(data.value.data).length) {
+    tweetFinished.value = true
+  }
+}
 
 const moreHandleOptions = {
   showDelete: false,
@@ -113,40 +117,40 @@ const moreHandleOptions = {
   mute: false,
   block: false,
   hide: false,
-  filterPost: false,
-};
+  filterPost: false
+}
 
-const handleCarousel = async (index) => {
-  currentImg.value = index;
-};
+const handleCarousel = async index => {
+  currentImg.value = index
+}
 defineExpose({
-  handleCarousel,
-});
+  handleCarousel
+})
 
 const viewDetail = () => {
-  const path = `/${tweetData.value.account.acct}/status/${tweetData.value.id}`;
-  goRouter(path);
-};
+  const path = `/${tweetData.value.account.acct}/status/${tweetData.value.id}`
+  goRouter(path)
+}
 router.beforeEach((to, from, next) => {
-  goBack();
-  next();
-});
-provide('tweetMode', ref('detail'));
+  goBack()
+  next()
+})
+provide('tweetMode', ref('detail'))
 
-import useVideos from '@/hooks/useVideos';
+import useVideos from '@/hooks/useVideos'
 onUnmounted(() => {
-  useVideos().pauseAllVideos();
-});
+  useVideos().pauseAllVideos()
+})
 
 const renderAvatar = (attachment, isSmall = false) => {
-  const url = attachment.url || attachment.remote_url;
+  const url = attachment.url || attachment.remote_url
   if (url || attachment.thumbnail_url) {
-    const thumbnail_url = attachment.thumbnail_url || url;
-    return isSmall ? thumbnail_url : url;
+    const thumbnail_url = attachment.thumbnail_url || url
+    return isSmall ? thumbnail_url : url
   } else {
-    return defaultAvatar;
+    return defaultAvatar
   }
-};
+}
 </script>
 
 <template>
@@ -158,18 +162,34 @@ const renderAvatar = (attachment, isSmall = false) => {
       <div class="right-btn" v-if="route.name !== 'tweet-status'">
         <a-dropdown>
           <a-button type="text">
-            <nuxt-icon name="gengduo"></nuxt-icon>
+            <SvgIcon name="gengduo"></SvgIcon>
           </a-button>
           <template #content>
-            <a-doption @click="viewDetail">{{ t('tweet.viewDetail') }}</a-doption>
+            <a-doption @click="viewDetail">{{
+              t('tweet.viewDetail')
+            }}</a-doption>
           </template>
         </a-dropdown>
       </div>
       <div class="container">
-        <a-carousel class="photo-carousel" ref="carouselDom" v-model:current="currentImg">
-          <a-carousel-item v-for="(attachment, i) in status.attachments" :key="i" class="carousel-item">
+        <a-carousel
+          class="photo-carousel"
+          ref="carouselDom"
+          v-model:current="currentImg"
+        >
+          <a-carousel-item
+            v-for="(attachment, i) in status.attachments"
+            :key="i"
+            class="carousel-item"
+          >
             <template v-if="attachment.file_type == 4">
-              <CustomVideo class="carousel-img" :src="attachment.url" controls :poster="attachment.thumbnail_url" @click.stop></CustomVideo>
+              <CustomVideo
+                class="carousel-img"
+                :src="attachment.url"
+                controls
+                :poster="attachment.thumbnail_url"
+                @click.stop
+              ></CustomVideo>
             </template>
             <template v-else>
               <CustomImage
@@ -189,18 +209,28 @@ const renderAvatar = (attachment, isSmall = false) => {
         <div class="tweet-header">
           <div class="tweet-avatar">
             <UserCard :account="tweetData.account">
-              <Avatar :account="tweetData.account" @click="goRouter(`/${tweetData.account.acct}`)"></Avatar>
+              <Avatar
+                :account="tweetData.account"
+                @click="goRouter(`/${tweetData.account.acct}`)"
+              ></Avatar>
             </UserCard>
           </div>
           <UserCard :account="tweetData.account">
-            <div class="userinfo" @click="goRouter(`/${tweetData.account.acct}`)">
+            <div
+              class="userinfo"
+              @click="goRouter(`/${tweetData.account.acct}`)"
+            >
               <div class="userinfo-name">
                 {{ tweetData.account.display_name }}
               </div>
               <div class="userinfo-desc">{{ tweetData.account.acct }}</div>
             </div>
           </UserCard>
-          <MoreHandle :status="tweetData" :index="props.index" :options="moreHandleOptions"></MoreHandle>
+          <MoreHandle
+            :status="tweetData"
+            :index="props.index"
+            :options="moreHandleOptions"
+          ></MoreHandle>
         </div>
         <div class="tweet-body">
           <TweetContent :status="tweetData" :showMedia="false"></TweetContent>
@@ -219,11 +249,16 @@ const renderAvatar = (attachment, isSmall = false) => {
             :placeholder="t('tweet.writeYourComment')"
             allow-clear
             :auto-size="{
-              minRows: 3,
+              minRows: 3
             }"
           />
           <div style="text-align: right">
-            <a-button type="primary" :loading="tweetByReplyLoading" @click="sendTweetByReply">{{ t('tweet.comment') }}</a-button>
+            <a-button
+              type="primary"
+              :loading="tweetByReplyLoading"
+              @click="sendTweetByReply"
+              >{{ t('tweet.comment') }}</a-button
+            >
           </div>
         </div>
         <div class="replyList">
@@ -268,8 +303,8 @@ const renderAvatar = (attachment, isSmall = false) => {
       z-index: 2;
       transition: all 0.3s ease-in-out;
       color: var(--color-neutral-9);
-      @extend %cp;
-      @extend %flex-col-center;
+      // @extend %cp;
+      // @extend %flex-col-center;
 
       &:hover {
         color: var(--color-neutral-8);
@@ -283,9 +318,9 @@ const renderAvatar = (attachment, isSmall = false) => {
       top: 4px;
       z-index: 2;
       font-size: var(--size);
-      @extend %cp;
-      @extend %flex-col-center;
-      @extend %dropdown-color;
+      // @extend %cp;
+      // @extend %flex-col-center;
+      // @extend %dropdown-color;
       gap: 10px;
     }
 

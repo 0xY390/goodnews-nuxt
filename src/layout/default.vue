@@ -551,7 +551,7 @@ const { logo } = useLogo()
         </div>
       </div>
       <div class="main-area">
-        <slot />
+        <router-view />
       </div>
       <div class="panel-area" v-if="showRightPanel">
         <div class="panel-container">

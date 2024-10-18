@@ -1,4 +1,5 @@
 <script setup>
+import PreviewCard from '@/components/PreviewCard/index.vue'
 import CustomImage from '@/components/CustomImage/index.vue'
 import CustomVideo from '@/components/CustomVideo/index.vue'
 import TweetContentVote from '@/components/TweetContentVote/index.vue'
@@ -9,6 +10,7 @@ import { Tippy } from 'vue-tippy'
 import UserCardContent from '@/components/UserCard/content.vue'
 import { blurHashData } from './config'
 import { editTweetData, unlockTweet, getTweetDetail } from '~/api/tweet'
+import { useUserStore, useLoginModalStore } from '@/stores'
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -22,15 +24,15 @@ const props = defineProps({
     default: true
   }
 })
-const userInfo = getUser()
+const userStore = useUserStore()
+const { userInfo } = userStore
 
 // 是不是本人的推文
 const isSelf = computed(() => userInfo.value?.id === props.status.account.id)
-import { useLoginModalStore } from '@/stores/loginModal'
 const loginModalStore = useLoginModalStore()
 
 const getSensitive = () => {
-  if (getUser().value?.is_display_sensitive === 1) {
+  if (userInfo.value?.is_display_sensitive === 1) {
     return false
   }
   if (props.status.is_sensitive === 1) {
@@ -260,8 +262,9 @@ const fileList = computed(() => {
   return []
 })
 
-import { useArticleStore } from '@/stores/articleStore'
+import { useArticleStore } from '@/stores'
 const articleStore = useArticleStore()
+import { useIntersectionObserver } from '@vueuse/core'
 const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
   if (isIntersecting) {
     articleStore.addArticleId(props.status.id)
@@ -309,10 +312,10 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     <a-link v-if="isTextExceeded" class="showmore" @click.stop="showMore">{{
       t('tweet.showMore')
     }}</a-link>
-    <nuxt-link
+    <router-link
       class="nuxt-link-href"
       :to="`/user/${tweetData.account.acct}/status/${tweetData.id}`"
-      >{{ t('tweet.viewDetail') }}</nuxt-link
+      >{{ t('tweet.viewDetail') }}</router-link
     >
     <div class="vote-block" v-if="status.polls">
       <TweetContentVote :data="status" @reTweet="reTweet"></TweetContentVote>

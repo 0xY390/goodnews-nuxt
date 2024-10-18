@@ -4,8 +4,10 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite';
 import { vitePluginForArco } from '@arco-plugins/vite-vue'
 import { svgBuilder } from './src/plugins/Builder' // svg导入
+import { VantResolver } from '@vant/auto-import-resolver';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,12 +20,18 @@ export default defineConfig({
         'vue-router',
         'pinia',
         'vue-i18n',
-      ]
+      ],
+      resolvers: [VantResolver()],
     }),
+    Components({
+      resolvers: [VantResolver()],
+    }),
+
     vitePluginForArco({
       style: 'css'
     }),
     svgBuilder('./src/assets/icons/'),
+    // vant按需引入
   ],
   resolve: {
     alias: {

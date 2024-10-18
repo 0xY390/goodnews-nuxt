@@ -14,6 +14,10 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 
+// dayjs
+import dayjsPlugin from '@/plugins/dayjs'
+app.use(dayjsPlugin)
+
 import i18n from '@/locales'
 app.use(i18n)
 

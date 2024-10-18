@@ -17,7 +17,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'layout',
       component: defaultLayout,
       children: [
         {
@@ -26,8 +26,8 @@ const router = createRouter({
           component: () => import('../views/index.vue'),
           // 路由守卫
           beforeEnter: (to, from, next) => {
-            next()
             loginGuard()
+            next()
           }
         }
       ]

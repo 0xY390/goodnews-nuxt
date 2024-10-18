@@ -2,7 +2,8 @@
 import Avatar from '@/components/Avatar/index.vue'
 import MoreHandle from '@/components/MoreHandle/index.vue'
 import EmbedTweet from '@/components/EmbedTweet/index.vue'
-import { useRouterStore } from '@/stores/router'
+import { useCacheDataStore } from '@/stores'
+import dayjs from 'dayjs'
 const { t } = useI18n()
 const props = defineProps({
   // 推文
@@ -36,9 +37,9 @@ const deleteTweet = () => {
   emits('delete', props.index)
 }
 
-const routerStore = useRouterStore()
+const cacheDataStore = useCacheDataStore()
 
-const { tweetList, accountInfo } = storeToRefs(routerStore)
+const { tweetList, accountInfo } = storeToRefs(cacheDataStore)
 
 // 进入推文详情
 const router = useRouter()
@@ -98,7 +99,7 @@ const goRouter = account => {
 }
 
 const setRouter = account => {
-  routerStore.updateAccountInfo(account)
+  cacheDataStore.updateAccountInfo(account)
 }
 const gotoAccount = account => {
   router.push(`/user/${account.acct}`)
@@ -168,22 +169,22 @@ const gotoAccount = account => {
         <div class="tweet-header">
           <UserCard :account="tweetData.account" class="usercard">
             <div class="userinfo" @click.stop="goRouter(tweetData.account)">
-              <nuxt-link
+              <router-link
                 class="userinfo-name"
                 :to="`/user/${tweetData.account.acct}`"
                 @click.stop="setRouter(tweetData.account)"
               >
                 {{ tweetData.account?.display_name }}
-              </nuxt-link>
+              </router-link>
               <div class="userinfo-desc">
-                <nuxt-link
+                <router-link
                   class="user-info-desc-acct"
                   :to="`/user/${status.account.acct}`"
                   @click.stop="setRouter(tweetData.account)"
                 >
                   {{ tweetData.account?.acct }} ·
-                </nuxt-link>
-                {{ $dayjs(tweetData.published_at).fromNow() }}
+                </router-link>
+                {{ dayjs(tweetData.published_at).fromNow() }}
               </div>
             </div>
           </UserCard>

@@ -1,8 +1,8 @@
-import { manualFetch } from '../base';
-
+import request from '@/utils/request'
 // 导入
 export const importData = (data) => {
-  return manualFetch('/_api/admin/imports/upload', {
+  return request({
+    url: '/_api/admin/imports/upload',
     method: 'post',
     body: data,
   });

@@ -3,9 +3,9 @@
     <p class="link-footer-text">
       <template v-for="item in linkList" :key="item.name">
         <span v-if="item.tipText">{{ item.tipText }}</span>
-        <nuxt-link :to="item.link" :target="item.target">{{
+        <router-link :to="item.link" :target="item.target">{{
           item.name
-        }}</nuxt-link>
+        }}</router-link>
         <span v-if="item.showpoint">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
       </template>
     </p>

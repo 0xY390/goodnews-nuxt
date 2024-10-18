@@ -1,90 +1,93 @@
 <script setup>
-const { t } = useI18n();
+const { t } = useI18n()
 const options = ref([
   { name: t('editor.option', { num: 1 }), value: '' },
-  { name: t('editor.option', { num: 2 }), value: '' },
-]);
+  { name: t('editor.option', { num: 2 }), value: '' }
+])
 const addOption = () => {
-  options.value.push({ name: t('editor.alternative', { num: options.value.length + 1 }), value: '' });
-};
-const builderOptions = (type) => {
-  let result = [];
+  options.value.push({
+    name: t('editor.alternative', { num: options.value.length + 1 }),
+    value: ''
+  })
+}
+const builderOptions = type => {
+  let result = []
   if (type === 0) {
-    result = Array.from({ length: 8 }, (v, k) => k).map((item) => {
-      return { value: item, label: `${item}${t('vote.day')}` };
-    });
+    result = Array.from({ length: 8 }, (v, k) => k).map(item => {
+      return { value: item, label: `${item}${t('vote.day')}` }
+    })
   } else if (type === 1) {
-    result = Array.from({ length: 25 }, (v, k) => k).map((item) => {
-      return { value: item, label: `${item}${t('vote.hour')}` };
-    });
+    result = Array.from({ length: 25 }, (v, k) => k).map(item => {
+      return { value: item, label: `${item}${t('vote.hour')}` }
+    })
   } else if (type === 2) {
-    result = Array.from({ length: 61 }, (v, k) => k).map((item) => {
-      return { value: item, label: `${item}${t('vote.minute')}` };
-    });
+    result = Array.from({ length: 61 }, (v, k) => k).map(item => {
+      return { value: item, label: `${item}${t('vote.minute')}` }
+    })
   }
-  return result;
-};
+  return result
+}
 const optionsArgs = {
   days: builderOptions(0),
   hours: builderOptions(1),
-  minutes: builderOptions(2),
-};
+  minutes: builderOptions(2)
+}
 const formValue = ref({
   days: 0,
   hours: 0,
-  minutes: 0,
-});
+  minutes: 0
+})
 
-const emits = defineEmits(['closeVote', 'submitVote']);
+const emits = defineEmits(['closeVote', 'submitVote'])
 // 重置组件数据
 const resetFormData = () => {
   options.value = [
     { name: t('editor.option', { num: 1 }), value: '' },
-    { name: t('editor.option', { num: 2 }), value: '' },
-  ];
+    { name: t('editor.option', { num: 2 }), value: '' }
+  ]
   formValue.value = {
     days: 0,
     hours: 0,
-    minutes: 0,
-  };
-};
+    minutes: 0
+  }
+}
 const closeVote = () => {
-  emits('closeVote');
-};
+  emits('closeVote')
+}
 // 获取组件数据
 const getFormData = () => {
-  const result = options.value.map((item) => item.value);
+  const result = options.value.map(item => item.value)
   if (result.length < 2) {
-    return Promise.reject(new Error(t('vote.votingRequiresAtLeastTwoOptions')));
+    return Promise.reject(new Error(t('vote.votingRequiresAtLeastTwoOptions')))
   }
   if (result.length > 4) {
-    return Promise.reject(new Error(t('vote.votingCanOnlyHaveFourOptions')));
+    return Promise.reject(new Error(t('vote.votingCanOnlyHaveFourOptions')))
   }
-  if (result.some((item) => item === '')) {
-    return Promise.reject(new Error(t('vote.votingOptionCannotBeEmpty')));
+  if (result.some(item => item === '')) {
+    return Promise.reject(new Error(t('vote.votingOptionCannotBeEmpty')))
   }
 
-  const days = formValue.value.days;
-  const hours = formValue.value.hours;
-  const minutes = formValue.value.minutes;
+  const days = formValue.value.days
+  const hours = formValue.value.hours
+  const minutes = formValue.value.minutes
   if (days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 === 0) {
-    return Promise.reject(new Error(t('vote.votingDurationCannotBeZero')));
+    return Promise.reject(new Error(t('vote.votingDurationCannotBeZero')))
   }
   const resp = {
     success: true,
     data: {
       options: result,
       multiple: false,
-      expires_in: days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60,
-    },
-  };
-  return Promise.resolve(resp);
-};
+      expires_in: days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60
+    }
+  }
+  return Promise.resolve(resp)
+}
 // 将组件数据暴露出去
 defineExpose({
   getFormData,
-  resetFormData,
-});
+  resetFormData
+})
 </script>
 
 <template>
@@ -94,13 +97,18 @@ defineExpose({
         <div class="vote-options-list">
           <div class="vote-options-item" v-for="item in options">
             <div class="flex">
-              <a-input v-model="item.value" :placeholder="item.name" maxlength="25" show-word-limit />
+              <a-input
+                v-model="item.value"
+                :placeholder="item.name"
+                maxlength="25"
+                show-word-limit
+              />
             </div>
           </div>
         </div>
         <div class="right-add-btn" v-if="options.length != 4">
           <a-button type="text" @click="addOption">
-            <nuxt-icon name="add"></nuxt-icon>
+            <SvgIcon name="add"></SvgIcon>
           </a-button>
         </div>
       </div>
@@ -108,18 +116,48 @@ defineExpose({
         <div class="title">{{ t('vote.votingDuration') }}</div>
         <div class="argument-form-list">
           <div class="argument-form-item">
-            <a-select v-model="formValue.days" class="m-2" placeholder="Select" size="small">
-              <a-option v-for="item in optionsArgs.days" :key="item.value" :label="item.label" :value="item.value" />
+            <a-select
+              v-model="formValue.days"
+              class="m-2"
+              placeholder="Select"
+              size="small"
+            >
+              <a-option
+                v-for="item in optionsArgs.days"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </a-select>
           </div>
           <div class="argument-form-item">
-            <a-select v-model="formValue.hours" class="m-2" placeholder="Select" size="small">
-              <a-option v-for="item in optionsArgs.hours" :key="item.value" :label="item.label" :value="item.value" />
+            <a-select
+              v-model="formValue.hours"
+              class="m-2"
+              placeholder="Select"
+              size="small"
+            >
+              <a-option
+                v-for="item in optionsArgs.hours"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </a-select>
           </div>
           <div class="argument-form-item">
-            <a-select v-model="formValue.minutes" class="m-2" placeholder="Select" size="small">
-              <a-option v-for="item in optionsArgs.minutes" :key="item.value" :label="item.label" :value="item.value" />
+            <a-select
+              v-model="formValue.minutes"
+              class="m-2"
+              placeholder="Select"
+              size="small"
+            >
+              <a-option
+                v-for="item in optionsArgs.minutes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </a-select>
           </div>
         </div>

@@ -1,9 +1,10 @@
 <script setup>
-import TweetMessage from '@/components/Tweet/TweetMessage.vue';
-import loadingIcon from '~/components/loadingIcon/index.vue';
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
-const { t } = useI18n();
+import TweetMessage from '@/components/Tweet/TweetMessage.vue'
+import loadingIcon from '~/components/loadingIcon/index.vue'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import mitt from '@/utils/mitt'
+const { t } = useI18n()
 const props = defineProps({
   // 是否隐藏推文
   isHidden: { type: Boolean, default: false },
@@ -12,96 +13,119 @@ const props = defineProps({
   // 是否在加载状态
   loading: { type: Boolean, default: false },
   // 数据是否加载完毕 默认false  如果为true则不会触发加载更多
-  finished: { type: Boolean, default: false },
-});
+  finished: { type: Boolean, default: false }
+})
+watchEffect(() => {
+  console.log(`output->props.tweetList`, props.tweetList)
+})
 
-const slots = defineSlots();
-const hasNullTextSlot = computed(() => Object.keys(slots).includes('nullText'));
+const slots = defineSlots()
+const hasNullTextSlot = computed(() => Object.keys(slots).includes('nullText'))
 
-const tweets = ref([]);
+const tweets = ref([])
 
 // 初始化推文的上下文回复关系
 function initTweetList() {
+  console.log(`output->回来了`, props.tweetList)
   tweets.value = props.tweetList.reduce((acc, cur) => {
     if (acc.length > 0) {
-      acc[acc.length - 1].replyLineBottom = false;
-      cur.replyLineTop = false;
+      acc[acc.length - 1].replyLineBottom = false
+      cur.replyLineTop = false
       if (acc[acc.length - 1].reply_to_id === cur.id) {
-        acc[acc.length - 1].replyLineBottom = true;
-        cur.replyLineTop = true;
+        acc[acc.length - 1].replyLineBottom = true
+        cur.replyLineTop = true
       }
     }
-    acc.push(cur);
-    return acc;
-  }, []);
+    acc.push(cur)
+    return acc
+  }, [])
 }
 
 watchEffect(() => {
-  initTweetList();
-});
+  initTweetList()
+})
 
 onActivated(() => {
-  console.log(`output->回来了`);
-  initTweetList();
-});
+  initTweetList()
+})
 
-const tweetUpdate = (e) => {
-  const item = tweets.value.find((item) => item.id === e.id);
+const tweetUpdate = e => {
+  const item = tweets.value.find(item => item.id === e.id)
   if (item) {
-    Object.assign(item, e);
+    Object.assign(item, e)
   }
-};
+}
 
-const hideTweet = (index) => {
+const hideTweet = index => {
   if (index > -1) {
-    tweets.value.splice(index, 1);
+    tweets.value.splice(index, 1)
   }
-};
+}
 
-const emit = defineEmits(['load']);
+const emit = defineEmits(['load'])
 
-const current = ref(0);
+const current = ref(0)
 
-const observerButton = ref(null);
+const observerButton = ref(null)
+import { useIntersectionObserver } from '@vueuse/core'
 const { stop } = useIntersectionObserver(
   observerButton,
   ([{ isIntersecting }]) => {
     if (isIntersecting) {
-      if (props.finished) return;
+      if (props.finished) return
 
-      current.value++;
+      current.value++
 
-      mitt.emit('tweetListLoading', true);
+      mitt.emit('tweetListLoading', true)
       emit('load', {
-        page: current.value,
-      });
+        page: current.value
+      })
     }
   },
   {
-    rootMargin: '500px',
+    rootMargin: '500px'
   }
-);
+)
 
 onUnmounted(() => {
-  stop();
-});
+  stop()
+})
 
 const resetData = () => {
-  current.value = 0;
-  tweets.value = [];
-};
+  current.value = 0
+  tweets.value = []
+}
 defineExpose({
-  resetData,
-});
+  resetData
+})
 </script>
 
 <template>
   <div class="tweet-messages">
     <div class="tweet-message-list">
-      <DynamicScroller :items="tweets" :min-item-size="1" class="scroller" page-mode>
+      <DynamicScroller
+        :items="tweets"
+        :min-item-size="1"
+        class="scroller"
+        page-mode
+      >
         <template v-slot="{ item, index, active }">
-          <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[item.content_rendered]" :data-index="index" tag="article">
-            <TweetMessage :status="item" :index="index" :key="item.id" :isHidden="props.isHidden" @reTweet="tweetUpdate" @delete="hideTweet" isLazy>
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :size-dependencies="[item.content_rendered]"
+            :data-index="index"
+            tag="article"
+          >
+            <TweetMessage
+              :status="item"
+              :index="index"
+              :key="item.id"
+              :isHidden="props.isHidden"
+              @reTweet="tweetUpdate"
+              @delete="hideTweet"
+              isLazy
+            >
             </TweetMessage>
           </DynamicScrollerItem>
         </template>

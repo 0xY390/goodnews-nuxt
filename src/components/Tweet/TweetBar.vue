@@ -1,154 +1,180 @@
 <script setup>
-const { t } = useI18n();
-import { copyToClipboard } from '@/utils/index';
-const value = defineModel();
+const { t } = useI18n()
+import { copyToClipboard } from '@/utils/index'
+import { useUserStore, useLoginModalStore } from '@/stores'
+const value = defineModel()
 const isFavor = computed(() => {
-  return value.value.statuses_fave;
-});
+  return value.value.statuses_fave
+})
 const isReblog = computed(() => {
-  return value.value.reblog;
-});
+  return value.value.reblog
+})
 
-const userStore = useUserStore();
-const loginModalStore = useLoginModalStore();
-import { bookmarkTweet, removeBookmark } from '@/api/bookmarks';
-import { tweetToFave, tweetToUnfave, tweetToRepost, tweetToUnrepost } from '@/api/tweet';
+const userStore = useUserStore()
+const loginModalStore = useLoginModalStore()
+import { bookmarkTweet, removeBookmark } from '@/api/bookmarks'
+import {
+  tweetToFave,
+  tweetToUnfave,
+  tweetToRepost,
+  tweetToUnrepost
+} from '@/api/tweet'
 const loading = ref({
   bookmark: false,
   fover: false,
-  reblog: false,
-});
-const toggle = (type) => {
+  reblog: false
+})
+const toggle = type => {
   const map = {
     favor: async () => {
-      if (loading.value.fover) return;
+      if (loading.value.fover) return
       if (value.value.statuses_fave) {
-        loading.value.fover = true;
+        loading.value.fover = true
         await tweetToUnfave(value.value.id).finally(() => {
-          loading.value.fover = false;
-        });
+          loading.value.fover = false
+        })
 
-        value.value.statuses_fave = false;
-        value.value.fave_count -= 1;
+        value.value.statuses_fave = false
+        value.value.fave_count -= 1
       } else {
-        loading.value.fover = true;
+        loading.value.fover = true
         await tweetToFave(value.value.id).finally(() => {
-          loading.value.fover = false;
-        });
-        value.value.statuses_fave = true;
-        value.value.fave_count += 1;
+          loading.value.fover = false
+        })
+        value.value.statuses_fave = true
+        value.value.fave_count += 1
       }
     },
     reblog: async () => {
-      if (loading.value.reblog) return;
+      if (loading.value.reblog) return
       if (value.value.reblog) {
-        loading.value.reblog = true;
+        loading.value.reblog = true
         await tweetToUnrepost(value.value.id).finally(() => {
-          loading.value.reblog = false;
-        });
-        value.value.reblog = false;
-        value.value.reblog_count -= 1;
+          loading.value.reblog = false
+        })
+        value.value.reblog = false
+        value.value.reblog_count -= 1
       } else {
-        loading.value.reblog = true;
+        loading.value.reblog = true
         await tweetToRepost(value.value.id).finally(() => {
-          loading.value.reblog = false;
-        });
-        value.value.reblog = true;
-        value.value.reblog_count += 1;
+          loading.value.reblog = false
+        })
+        value.value.reblog = true
+        value.value.reblog_count += 1
       }
     },
     bookmarked: async () => {
-      if (loading.value.bookmark) return;
+      if (loading.value.bookmark) return
       if (value.value.bookmarked) {
-        loading.value.bookmark = true;
+        loading.value.bookmark = true
         await removeBookmark(value.value.id).finally(() => {
-          loading.value.bookmark = false;
-        });
-        value.value.bookmarked = false;
+          loading.value.bookmark = false
+        })
+        value.value.bookmarked = false
       } else {
-        loading.value.bookmark = true;
+        loading.value.bookmark = true
         await bookmarkTweet(value.value.id).finally(() => {
-          loading.value.bookmark = false;
-        });
-        value.value.bookmarked = true;
+          loading.value.bookmark = false
+        })
+        value.value.bookmarked = true
       }
-    },
-  };
-
-  if (userStore.userInfo?.id === undefined) {
-    loginModalStore.openLoginModal();
-    return;
+    }
   }
 
-  map[type] && map[type]();
-};
-const emit = defineEmits(['goDetail']);
+  if (userStore.userInfo?.id === undefined) {
+    loginModalStore.openLoginModal()
+    return
+  }
+
+  map[type] && map[type]()
+}
+const emit = defineEmits(['goDetail'])
 const goDetail = () => {
-  emit('goDetail');
-};
+  emit('goDetail')
+}
 
 const share = () => {
-  let link = `${window.location.origin}/user/${value.value.account.acct}/status/${value.value.id}`;
-  const { VITE_SYS_NAME: systemName } = import.meta.env;
+  let link = `${window.location.origin}/user/${value.value.account.acct}/status/${value.value.id}`
+  const { VITE_SYS_NAME: systemName } = import.meta.env
   if (navigator.share) {
     const shareData = {
       title: systemName,
       text: '',
-      url: link,
-    };
+      url: link
+    }
     navigator
       .share(shareData)
       .then(() => console.log('分享成功'))
-      .catch((error) => console.error('分享失败', error));
+      .catch(error => console.error('分享失败', error))
   } else {
-    copyToClipboard(link);
-    useMessage().success(t('common.copySuccess'));
+    copyToClipboard(link)
+    useMessage().success(t('common.copySuccess'))
   }
-};
+}
 </script>
 
 <template>
   <div class="tweet-bar">
     <div class="bar-item flex1" @click="goDetail">
       <div class="icon-box">
-        <Icon name="mingcute:comment-line"></Icon>
+        <Icon icon="mingcute:comment-line"></Icon>
       </div>
       <div class="item-text">{{ value.reply_count }}</div>
     </div>
-    <div class="bar-item flex1" style="--icon-color: var(--red-6)" :class="{ isFavor, disabled: loading.fover }" @click="toggle('favor')">
+    <div
+      class="bar-item flex1"
+      style="--icon-color: var(--red-6)"
+      :class="{ isFavor, disabled: loading.fover }"
+      @click="toggle('favor')"
+    >
       <div class="icon-box">
-        <Icon v-if="loading.fover" name="line-md:loading-twotone-loop" />
+        <Icon v-if="loading.fover" icon="line-md:loading-twotone-loop" />
         <template v-else>
-          <Icon v-if="isFavor" name="lets-icons:favorite-fill"></Icon>
-          <Icon v-else name="lets-icons:favorite"></Icon>
+          <Icon v-if="isFavor" icon="lets-icons:favorite-fill"></Icon>
+          <Icon v-else icon="lets-icons:favorite"></Icon>
         </template>
       </div>
       <div class="item-text">{{ value.fave_count }}</div>
     </div>
-    <div class="bar-item flex1" style="--icon-color: var(--green-6)" :class="{ isReblog, disabled: loading.reblog }" @click="toggle('reblog')">
+    <div
+      class="bar-item flex1"
+      style="--icon-color: var(--green-6)"
+      :class="{ isReblog, disabled: loading.reblog }"
+      @click="toggle('reblog')"
+    >
       <div class="icon-box">
-        <Icon v-if="loading.reblog" name="line-md:loading-twotone-loop" />
+        <Icon v-if="loading.reblog" icon="line-md:loading-twotone-loop" />
         <template v-else>
-          <Icon v-if="isReblog" name="bx:repost"></Icon>
-          <Icon v-else name="bx:repost"></Icon>
+          <Icon v-if="isReblog" icon="bx:repost"></Icon>
+          <Icon v-else icon="bx:repost"></Icon>
         </template>
       </div>
       <div class="item-text">{{ value.reblog_count }}</div>
     </div>
     <div class="right">
       <div class="bar-item"></div>
-      <div class="bar-item" :class="{ tagged: value.bookmarked, disabled: loading.bookmark }" @click="toggle('bookmarked')">
+      <div
+        class="bar-item"
+        :class="{ tagged: value.bookmarked, disabled: loading.bookmark }"
+        @click="toggle('bookmarked')"
+      >
         <div class="icon-box">
-          <Icon v-if="loading.bookmark" name="line-md:loading-twotone-loop" />
+          <Icon v-if="loading.bookmark" icon="line-md:loading-twotone-loop" />
           <template v-else>
-            <Icon v-if="value.bookmarked" name="material-symbols:bookmark-added-rounded"></Icon>
-            <Icon v-else name="material-symbols:bookmark-add-outline-rounded"></Icon>
+            <Icon
+              v-if="value.bookmarked"
+              icon="material-symbols:bookmark-added-rounded"
+            ></Icon>
+            <Icon
+              v-else
+              icon="material-symbols:bookmark-add-outline-rounded"
+            ></Icon>
           </template>
         </div>
       </div>
       <div class="bar-item">
         <div class="icon-box" @click="share">
-          <Icon name="humbleicons:share"></Icon>
+          <Icon icon="humbleicons:share"></Icon>
         </div>
       </div>
     </div>
@@ -168,7 +194,7 @@ const share = () => {
     --icon-bg-color: rgba(var(--icon-color), 0.1);
     --icon-text-color: rgba(var(--icon-color), 1);
     --color-secondary: transparent;
-    @extend %cp;
+    // @extend %cp;
     .icon-box {
       width: 30px;
       height: 30px;
