@@ -170,4 +170,9 @@ defineExpose({
     }
   }
 }
+:deep(.vue-recycle-scroller__item-view) {
+  &.hover {
+    z-index: 1;
+  }
+}
 </style>
