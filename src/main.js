@@ -14,6 +14,9 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 
+import { VueQueryPlugin } from "vue-query";
+app.use(VueQueryPlugin);
+
 // dayjs
 import dayjsPlugin from '@/plugins/dayjs'
 app.use(dayjsPlugin)

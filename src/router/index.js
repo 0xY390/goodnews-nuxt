@@ -37,9 +37,16 @@ const router = createRouter({
           component: () => import('@/views/user/index.vue')
         },
         {
+          // 通知
           path: '/notifications',
           name: 'notifications',
           component: () => import('@/views/notifications/index.vue')
+        },
+        {
+          // 关注请求
+          path: 'followRequests',
+          name: 'followRequests',
+          component: () => import('@/views/followRequests/index.vue')
         }
       ]
     },
