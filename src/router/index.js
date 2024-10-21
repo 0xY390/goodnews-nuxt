@@ -47,6 +47,12 @@ const router = createRouter({
           path: 'followRequests',
           name: 'followRequests',
           component: () => import('@/views/followRequests/index.vue')
+        },
+        {
+          // 消息
+          path: 'message/:toId?',
+          name: 'message',
+          component: () => import('@/views/message/index.vue')
         }
       ]
     },
