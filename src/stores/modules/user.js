@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { loginApi } from '@/api/login'
-import { setToken } from '@/utils/auth'
+import { setToken, removeToken } from '@/utils/auth'
 export const useUserStore = defineStore('user', () => {
   const user = ref(null)
   const getUser = computed(() => user.value)
@@ -26,12 +26,18 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  const logout = () => {
+    user.value = null
+    removeToken(null)
+  }
+
   return {
     user,
     userInfo,
     getUser,
     setUser,
     login,
+    logout
   }
 },
   {

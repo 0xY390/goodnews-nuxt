@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { useUserStore } from '@/stores'
 const { t } = useI18n()
 const props = defineProps({
   data: {

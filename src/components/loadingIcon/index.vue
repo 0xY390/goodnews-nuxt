@@ -1,25 +1,23 @@
 <script setup>
-const loadingCanvas = ref(null);
+const loadingCanvas = ref(null)
 
 onMounted(async () => {
-  await nextTick();
-
+  await nextTick()
   try {
     new rive.Rive({
       src: '/rive/loading_light.riv',
       canvas: loadingCanvas.value,
-      autoplay: true,
-    });
+      autoplay: true
+    })
   } catch (error) {}
-});
+})
 </script>
 
 <template>
-  <ClientOnly>
-    <div class="loading-canvas-block">
-      <canvas ref="loadingCanvas" class="canvas"></canvas>
-    </div>
-  </ClientOnly>
+  <div class="loading-canvas-block">
+    <Icon icon="line-md:loading-twotone-loop" />
+    <!-- <canvas ref="loadingCanvas" class="canvas"></canvas> -->
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -29,6 +27,8 @@ onMounted(async () => {
   align-items: center;
   height: 100%;
   width: 100%;
+  font-size: 30px;
+  color: rgb(var(--arcoblue-6));
   .canvas {
     width: 100px;
     margin: 0 auto;

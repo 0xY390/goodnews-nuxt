@@ -1,20 +1,29 @@
 <script setup>
-import { useRoute } from 'vue-router';
-const route = useRoute();
+import { useRoute } from 'vue-router'
+const route = useRoute()
 defineProps({
   previewCard: {
-    type: Object,
-  },
-});
-const goHref = (url) => {
-  window.open(url);
-  return false;
-};
+    type: Object
+  }
+})
+const goHref = url => {
+  window.open(url)
+  return false
+}
 </script>
 <template>
-  <div @click.stop="goHref(previewCard.url)" ref="nofollow" class="preview-card">
+  <div
+    @click.stop="goHref(previewCard.url)"
+    ref="nofollow"
+    class="preview-card"
+  >
     <div v-if="previewCard.provider_name == 'YouTube'">
-      <embed style="width: 100%" class="aspect-[1.9/1]" :src="previewCard.url" type="" />
+      <embed
+        style="width: 100%"
+        class="aspect-[1.9/1]"
+        :src="previewCard.url"
+        type=""
+      />
     </div>
     <div v-else-if="previewCard.image_url">
       <img class="preview-" :src="previewCard.image_url" alt="" />
@@ -28,7 +37,7 @@ const goHref = (url) => {
     </div>
     <div v-else class="type-icon">
       <div class="icon-block">
-        <nuxt-icon class="icon-box" name="file-lines"></nuxt-icon>
+        <SvgIcon class="icon-box" icon="file-lines"></SvgIcon>
       </div>
       <div class="text-content">
         <h3 class="text-name">{{ previewCard.provider_name }}</h3>

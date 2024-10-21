@@ -30,10 +30,16 @@ const router = createRouter({
             next()
           }
         },
+        // 用户主页
         {
           path: '/user/:acct',
           name: 'user',
           component: () => import('@/views/user/index.vue')
+        },
+        {
+          path: '/notifications',
+          name: 'notifications',
+          component: () => import('@/views/notifications/index.vue')
         }
       ]
     },
