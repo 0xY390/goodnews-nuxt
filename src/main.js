@@ -1,5 +1,8 @@
 // import '@/assets/styles/mixin.scss'
 import './assets/main.scss'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light.css'
+import 'tippy.js/animations/scale.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 

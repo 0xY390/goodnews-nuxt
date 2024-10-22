@@ -270,13 +270,17 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     articleStore.addArticleId(props.status.id)
   }
 })
+const isDark = inject('isDark', false)
+const tippyTheme = computed(() => {
+  return isDark.value === false ? 'light' : 'dark'
+})
 </script>
 
 <template>
   <div class="tweet-content">
     <tippy
       :triggerTarget="triggerTarget"
-      theme="light"
+      :theme="tippyTheme"
       interactive
       interactiveDebounce="25"
       placement="bottom-start"
@@ -452,9 +456,7 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     }
   }
   .user-card-content {
-    background: var(--color-background);
     padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(var(--gray-10), 0.1);
   }
 }
 .showmore {
