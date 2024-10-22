@@ -1,4 +1,12 @@
 import request from '@/utils/request'
+// 书签列表
+export const getBookmarks = (params = {}) => {
+  return request({
+    url: '/_api/v1/bookmarks',
+    method: 'get',
+    params
+  });
+};
 // 将推文标记为书签
 export const bookmarkTweet = (tweetId) => {
   return request({

@@ -59,6 +59,12 @@ const router = createRouter({
           path: 'dm/message/:id',
           name: 'dmMessage',
           component: () => import('@/views/message/dm.vue')
+        },
+        {
+          // 书签
+          path: 'bookmarks',
+          name: 'bookmarks',
+          component: () => import('@/views/bookmarks/index.vue')
         }
       ]
     },
