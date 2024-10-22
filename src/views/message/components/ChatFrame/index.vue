@@ -24,7 +24,6 @@ const { data: chatUserInfo, isLoading: pending } = useQuery(
 const chatLog = computed(() => chatUserInfo.value?.messages || [])
 
 const notificationsNumStore = useNotificationsNumStore()
-const { notificationsNum } = storeToRefs(notificationsNumStore)
 
 onMounted(async () => {
   if (chatLog.value?.length) {
@@ -73,10 +72,9 @@ const onClickLeft = () => router.back()
     <div class="user-info">
       <div class="user-header">
         <div class="left-icon" @click="onClickLeft">
-          <Icon name="material-symbols:arrow-back-rounded"></Icon>
+          <Icon icon="material-symbols:arrow-back-rounded"></Icon>
         </div>
         <div class="user-title">{{ chatUserInfo?.displayName }}</div>
-        <div class="user-right"></div>
       </div>
     </div>
     <a-spin class="chat-frame" :loading="pending">

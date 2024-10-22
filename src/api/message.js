@@ -12,7 +12,7 @@ export const send = (data) => {
   return request({
     url: `/_api/v1/dm/conversations/send`,
     method: 'post',
-    body: data
+    data
   })
 }
 
@@ -21,7 +21,7 @@ export const create = (data) => {
   return request({
     url: '/_api/v1/dm/conversations/create',
     method: 'post',
-    body: data
+    data
   });
 };
 // 获取会话列表

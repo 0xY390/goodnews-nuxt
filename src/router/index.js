@@ -53,6 +53,12 @@ const router = createRouter({
           path: 'message/:toId?',
           name: 'message',
           component: () => import('@/views/message/index.vue')
+        },
+        {
+          // 消息
+          path: 'dm/message/:id',
+          name: 'dmMessage',
+          component: () => import('@/views/message/dm.vue')
         }
       ]
     },

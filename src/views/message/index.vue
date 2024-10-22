@@ -34,27 +34,28 @@ const search = async () => {
 const startChatWithUser = async dm => {
   closeTrigger()
   Message.loading('Loading...')
-  const conversation = await createConversation(dm.toId)
-  await refresh()
+  const { id } = await createConversation(dm.toId)
+  await refresh.value()
   Message.clear()
-  activeItem.value = conversations.value.find(
-    item => item.id === conversation.value.id
-  )
+  activeItem.value = conversations.value.find(item => item.id === id)
   keyword.value = ''
   keywordCp.value = ''
 }
 
 const createConversation = async toId => {
-  const { data: resp } = await create({ toId: toId })
+  const resp = await create({ toId: toId })
   return resp
 }
 
 onMounted(async () => {
   const toId = route.params.toId
-  let conversationId = ''
   if (toId) {
     const res = await createConversation(toId)
-    conversationId = res.value.id
+    await refresh.value()
+    activeItem.value = conversations.value.find(item => item.id === res.id)
+  } else {
+    await refresh.value()
+    activeItem.value = conversations.value[0]
   }
 })
 
@@ -63,19 +64,7 @@ const { data: conversations, refetch: refresh } = useQuery(
   'conversations',
   () => getConversations()
 )
-watchEffect(() => {
-  if (conversations.value?.length > 0) {
-    if (route.params.toId) {
-      activeItem.value = conversations.value.find(
-        item => item.id === route.params.toId
-      )
-    } else {
-      activeItem.value = conversations.value[0]
-    }
-  }
-})
 const router = useRouter()
-
 const toView = e => {
   const width = document.body.clientWidth
   if (width <= 1280) {
@@ -135,13 +124,20 @@ const closeTrigger = () => {
         </a-trigger>
       </div>
 
+      1.{{ conversations?.length === 0 && !showTrigger && !chatting }} 2.{{
+        conversations?.length > 0
+      }}
+      3.{{ !!activeItem }}
       <p
         class="tips"
         v-if="conversations?.length === 0 && !showTrigger && !chatting"
       >
         {{ t('message.searchPeopleOrMessages') }}
       </p>
-      <div class="personal-list" v-if="conversations?.length > 0 && activeItem">
+      <div
+        class="personal-list"
+        v-if="conversations?.length > 0 && !!activeItem"
+      >
         <a-scrollbar
           style="height: 100%; overflow-y: auto"
           outer-class="scrollClass"
