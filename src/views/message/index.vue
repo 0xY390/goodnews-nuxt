@@ -123,11 +123,6 @@ const closeTrigger = () => {
           </template>
         </a-trigger>
       </div>
-
-      1.{{ conversations?.length === 0 && !showTrigger && !chatting }} 2.{{
-        conversations?.length > 0
-      }}
-      3.{{ !!activeItem }}
       <p
         class="tips"
         v-if="conversations?.length === 0 && !showTrigger && !chatting"
