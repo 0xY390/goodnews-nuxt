@@ -452,9 +452,9 @@ const { stop } = useIntersectionObserver(tweetHtml, ([{ isIntersecting }]) => {
     }
   }
   .user-card-content {
-    background: #fff;
+    background: var(--color-background);
     padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 0 rgba(var(--gray-10), 0.1);
   }
 }
 .showmore {

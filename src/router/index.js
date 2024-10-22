@@ -33,7 +33,7 @@ const router = createRouter({
         // 用户主页
         {
           path: '/user/:acct',
-          name: 'user',
+          name: 'acct',
           component: () => import('@/views/user/index.vue')
         },
         {
