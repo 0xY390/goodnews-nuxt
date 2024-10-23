@@ -59,11 +59,11 @@ export const getFollowingTweets = (data) => {
 };
 
 // 本服务器的推文--实时动态
-export const getTweetsByLocal = (data) => {
+export const getTweetsByLocal = (params) => {
   return request({
     url: '/_api/v1/local-timeline',
     method: 'GET',
-    data,
+    params,
   });
 };
 

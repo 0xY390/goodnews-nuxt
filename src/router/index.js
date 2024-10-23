@@ -70,7 +70,15 @@ const router = createRouter({
           // 跨站时间轴
           path: '/public/common',
           name: 'public-common',
+          alias: '/public/common/page-maxid-:maxid?',
           component: () => import('@/views/public/common/index.vue')
+        },
+        {
+          // 本地时间轴
+          path: '/public/local',
+          name: 'public-local',
+          alias: '/public/local/page-maxid-:maxid?',
+          component: () => import('@/views/public/local/index.vue')
         }
       ]
     },

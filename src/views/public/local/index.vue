@@ -1,220 +1,239 @@
-<script setup lang="ts">
-import loadingIcon from '~/components/loadingIcon/index.vue';
-import { manualFetch } from '~/api/base';
-import useScroll from '@/hooks/useScroll.js';
-const { t } = useI18n();
-const route = useRoute();
+<script setup>
+import loadingIcon from '~/components/loadingIcon/index.vue'
+import { getTweetsByLocal } from '~/api/tweet'
+import useScroll from '@/hooks/useScroll.js'
+const { t } = useI18n()
+const route = useRoute()
 
 const seoTitle = computed(() => {
   if (route.params.maxid) {
-    return t('timeline.localHeadForMaxid', { maxid: route.params.maxid });
+    return t('timeline.localHeadForMaxid', { maxid: route.params.maxid })
   }
-  return t('timeline.localHead');
-});
+  return t('timeline.localHead')
+})
 
-useHead({
-  title: seoTitle.value,
-  meta: [
-    {
-      name: 'description',
-      content: t('timeline.localHead'),
-    },
-  ],
-});
-definePageMeta({
-  name: 'public-local',
-  alias: '/public/local/page-maxid-:maxid?',
-});
+const pullLoading = ref(false)
 
-defineOptions({ name: 'public-local' });
-
-const pullLoading = ref(false);
-
-import mitt from '@/utils/mitt';
-
-const { data, loading, refresh, maxId } = await useList('publicLocal', async ({ max_id }: { max_id: string }) => {
-  const res = await manualFetch('/_api/v1/local-timeline', {
-    params: !!max_id ? { max_id, limit: 30 } : { limit: 30 },
-  });
-
-  pullLoading.value = false;
-
-  mitt.emit('tweetListLoading', false);
-
-  return res;
-});
-
-const finished = computed(() => {
-  let flag = false;
-  if (data.value?.currentLength < 30) {
-    flag = true;
+import mitt from '@/utils/mitt'
+const state = reactive({
+  data: [],
+  loading: false,
+  refresh: () => {},
+  maxId: '',
+  finished: false,
+  limit: 30
+})
+const getData = async () => {
+  state.loading = true
+  try {
+    const getParams = () => {
+      if (state.maxId) {
+        return { max_id: state.maxId, limit: state.limit }
+      }
+      return { limit: state.limit }
+    }
+    const res = await getTweetsByLocal(getParams())
+    pullLoading.value = false
+    mitt.emit('tweetListLoading', false)
+    state.finished = res.data.length < state.limit
+    state.data.push(...res.data)
+  } catch (error) {
+    console.log(`output->error`, error)
   }
-  return flag;
-});
+  state.loading = false
+}
+
+watchEffect(() => {
+  state.maxId
+  getData()
+})
 
 const tweetList = computed(() => {
-  return data.value?.list || [];
-});
+  return state.data || []
+})
 
-import { useNewTweetToast } from '@/components/newTweetToast/index.js';
-const showTweetToast = useNewTweetToast();
-const newTweetList = ref<any>([]);
-const homeNav = ref(null);
-const isElementInViewport = (el) => {
-  const rect = el.getBoundingClientRect();
+import { useNewTweetToast } from '@/components/newTweetToast/index.js'
+const showTweetToast = useNewTweetToast()
+const newTweetList = ref([])
+const homeNav = ref(null)
+const isElementInViewport = el => {
+  const rect = el.getBoundingClientRect()
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  );
-};
-const isShowToast = ref(true);
-const addCount = (tweet: any) => {
-  if (newTweetList.value.length === 3) return;
-  newTweetList.value.push(tweet.account);
+  )
+}
+const isShowToast = ref(true)
+const addCount = tweet => {
+  if (newTweetList.value.length === 3) return
+  newTweetList.value.push(tweet.account)
   if (newTweetList.value.length === 3) {
     showTweetToast({
       accounts: newTweetList.value,
-      isShowNav: isElementInViewport(homeNav.value),
-    });
+      isShowNav: isElementInViewport(homeNav.value)
+    })
     setTimeout(() => {
-      newTweetList.value = [];
-    }, 60000);
+      newTweetList.value = []
+    }, 60000)
   }
-};
-const { subscribeTimelineLocal } = useWebSocketManager();
+}
+import useWebSocketManager from '@/hooks/useWebSocketManager'
+const { subscribeTimelineLocal } = useWebSocketManager()
 
 const getList = () => {
   if (tweetList.value.length > 0) {
-    maxId.value = tweetList.value[tweetList.value.length - 1]?.id || '';
+    state.maxId = tweetList.value[tweetList.value.length - 1]?.id || ''
   }
-};
+}
 
-const cb = (data: any) => {
-  tweetList.value.unshift(data);
-};
-const editCb = (data: any) => {
-  const index = tweetList.value.findIndex((item: any) => item.id === data.id);
+const cb = data => {
+  tweetList.value.unshift(data)
+}
+const editCb = data => {
+  const index = tweetList.value.findIndex(item => item.id === data.id)
   if (index !== -1) {
-    tweetList.value.splice(index, 1, data);
+    tweetList.value.splice(index, 1, data)
   }
-};
+}
 const refreshTweetCb = () => {
-  const list = data.value?.list || [];
-  const tweetList = useWsTweet.popData('local');
+  const list = state.data || []
+  const tweetList = useWsTweet.popData('local')
   if (tweetList.length) {
-    list.unshift(...tweetList);
+    list.unshift(...tweetList)
   }
-};
+}
 
-import { useWsTweetStore } from '@/stores/wsTweet';
-const useWsTweet = useWsTweetStore();
+import { useWsTweetStore } from '@/stores'
+const useWsTweet = useWsTweetStore()
 onMounted(() => {
-  mitt.on('submit-tweet', cb);
-  mitt.on('edit-tweet', editCb);
-  mitt.on('refresh-tweet-list', refreshTweetCb);
-  const subscribe = subscribeTimelineLocal((event: string, tweet: any) => {
-    const list = data.value?.list || [];
+  mitt.on('submit-tweet', cb)
+  mitt.on('edit-tweet', editCb)
+  mitt.on('refresh-tweet-list', refreshTweetCb)
+  const subscribe = subscribeTimelineLocal((event, tweet) => {
+    const list = state.data || []
     if (event === 'delete') {
-      const index = list.findIndex((item: any) => item.id === tweet);
+      const index = list.findIndex(item => item.id === tweet)
 
       if (index >= 0) {
-        list.splice(index, 1);
+        list.splice(index, 1)
       }
 
-      return;
+      return
     }
 
-    useWsTweet.addData(tweet, 'local');
+    useWsTweet.addData(tweet, 'local')
 
     if (event === 'update') {
-      tweet.attachments = tweet.media_attachments;
-      tweet.content_rendered = tweet.content;
-      if (tweet.in_reply_to_id) tweet.reply_to_id = tweet.in_reply_to_id;
+      tweet.attachments = tweet.media_attachments
+      tweet.content_rendered = tweet.content
+      if (tweet.in_reply_to_id) tweet.reply_to_id = tweet.in_reply_to_id
       if (!list.length) {
-        return;
+        return
       }
 
-      addCount(tweet);
-      return;
+      addCount(tweet)
+      return
     }
-  });
-});
+  })
+})
 
 onUnmounted(() => {
-  mitt.off('submit-tweet', cb);
-  mitt.off('edit-tweet', editCb);
-  mitt.off('refresh-tweet-list', refreshTweetCb);
-});
+  mitt.off('submit-tweet', cb)
+  mitt.off('edit-tweet', editCb)
+  mitt.off('refresh-tweet-list', refreshTweetCb)
+})
 
 onDeactivated(() => {
-  useScroll().setScrollCache('public-local');
-});
+  useScroll().setScrollCache('public-local')
+})
 
 onActivated(() => {
-  const scrollTop = useScroll().getScrollCache('public-local');
+  const scrollTop = useScroll().getScrollCache('public-local')
   nextTick(() => {
-    useScroll().toScroll(scrollTop);
-  });
-});
+    useScroll().toScroll(scrollTop)
+  })
+})
 
-const tweetMessageRef = ref(null);
+const tweetMessageRef = ref(null)
 const onRefresh = async () => {
-  pullLoading.value = true;
+  pullLoading.value = true
 
-  if (!maxId.value) {
-    maxId.value = '';
-    refresh();
-    return;
+  if (!state.maxId) {
+    state.maxId = ''
+    refresh()
+    return
   }
 
-  maxId.value = '';
-};
+  state.maxId = ''
+}
 
-const router = useRouter();
+const router = useRouter()
 const nextPageHref = computed(() => {
-  const routes = router.getRoutes();
-  const currentIndex = routes.find((r) => r.path === route.path);
-  const path = currentIndex?.path.endsWith('/') ? currentIndex?.path : currentIndex?.path + '/';
-  return path + 'page-maxid-' + tweetList.value[tweetList.value.length - 1]?.id;
-});
+  const routes = router.getRoutes()
+  const currentIndex = routes.find(r => r.path === route.path)
+  const path = currentIndex?.path.endsWith('/')
+    ? currentIndex?.path
+    : currentIndex?.path + '/'
+  return path + 'page-maxid-' + tweetList.value[tweetList.value.length - 1]?.id
+})
 watchEffect(() => {
   if (route.params.maxid) {
-    maxId.value = route.params.maxid || '';
+    state.maxId = route.params.maxid || ''
   }
-});
+})
 
 const tabList = [
   {
     name: t('layout.home'),
-    path: '/',
+    path: '/'
   },
   {
     name: t('public.local'),
-    path: '/public/local',
+    path: '/public/local'
   },
   {
     name: t('public.crossSite'),
-    path: '/public/common',
-  },
-];
+    path: '/public/common'
+  }
+]
 </script>
 
 <template>
   <div class="pages">
     <PageHeader> {{ t('timeline.local') }} </PageHeader>
     <nav class="tab-nav" ref="homeNav">
-      <nuxt-link class="nav-item" v-for="item in tabList" :key="item.path" :class="{ active: item.path === '/public/local' }" :to="item.path">
+      <router-link
+        class="nav-item"
+        v-for="item in tabList"
+        :key="item.path"
+        :class="{ active: item.path === '/public/local' }"
+        :to="item.path"
+      >
         <div class="item-text">
           {{ item.name }}
         </div>
-      </nuxt-link>
+      </router-link>
     </nav>
     <div class="content">
-      <van-pull-refresh v-model="pullLoading" @refresh="onRefresh" head-height="75">
-        <TweetMessages ref="tweetMessageRef" viewKey="local" :tweetList="tweetList" :loading="loading" @load="getList" :finished="finished"></TweetMessages>
-        <nuxt-link :to="nextPageHref" class="nuxt-link-2">{{ t('public.nextPage') }}</nuxt-link>
+      <van-pull-refresh
+        v-model="pullLoading"
+        @refresh="onRefresh"
+        head-height="75"
+      >
+        <TweetMessages
+          ref="tweetMessageRef"
+          viewKey="local"
+          :tweetList="tweetList"
+          :loading="state.loading"
+          @load="getList"
+          :finished="state.finished"
+        ></TweetMessages>
+        <router-link :to="nextPageHref" class="nuxt-link-2">{{
+          t('public.nextPage')
+        }}</router-link>
         <template #loading>
           <loadingIcon></loadingIcon>
         </template>
