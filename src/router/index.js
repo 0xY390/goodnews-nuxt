@@ -44,27 +44,33 @@ const router = createRouter({
         },
         {
           // 关注请求
-          path: 'followRequests',
+          path: '/followRequests',
           name: 'followRequests',
           component: () => import('@/views/followRequests/index.vue')
         },
         {
           // 消息
-          path: 'message/:toId?',
+          path: '/message/:toId?',
           name: 'message',
           component: () => import('@/views/message/index.vue')
         },
         {
           // 消息
-          path: 'dm/message/:id',
+          path: '/dm/message/:id',
           name: 'dmMessage',
           component: () => import('@/views/message/dm.vue')
         },
         {
           // 书签
-          path: 'bookmarks',
+          path: '/bookmarks',
           name: 'bookmarks',
           component: () => import('@/views/bookmarks/index.vue')
+        },
+        {
+          // 跨站时间轴
+          path: '/public/common',
+          name: 'public-common',
+          component: () => import('@/views/public/common/index.vue')
         }
       ]
     },

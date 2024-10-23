@@ -41,11 +41,11 @@ export const tweetToDelete = (tweetId) => {
 };
 
 // 时间线
-export const getTimeLineData = (data) => {
+export const getTimeLineData = (params) => {
   return request({
     url: '/_api/v1/timeline',
     method: 'GET',
-    data,
+    params,
   });
 };
 
