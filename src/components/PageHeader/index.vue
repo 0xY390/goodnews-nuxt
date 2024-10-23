@@ -38,7 +38,7 @@ const props = defineProps({
   position: sticky;
   top: 0;
   backdrop-filter: blur(12px);
-  z-index: 1;
+  z-index: 2;
   transition: all 0.2s ease-out;
   .arrow {
     font-size: 24px;
