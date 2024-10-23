@@ -79,6 +79,18 @@ const router = createRouter({
           name: 'public-local',
           alias: '/public/local/page-maxid-:maxid?',
           component: () => import('@/views/public/local/index.vue')
+        },
+        {
+          // 列表
+          path: '/lists',
+          name: 'lists',
+          component: () => import('@/views/lists/index.vue')
+        },
+        {
+          // 列表详情
+          path: '/lists/:id',
+          name: 'lists-id',
+          component: () => import('@/views/lists/[id].vue')
         }
       ]
     },
