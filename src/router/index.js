@@ -103,6 +103,25 @@ const router = createRouter({
           path: 'profile',
           name: 'settings-profile',
           component: () => import('@/views/settings/profile/index.vue')
+        },
+        // 过滤器模块
+        {
+          // 过滤器列表
+          path: '/settings/adminFilters',
+          name: 'settings-adminFilters',
+          component: () => import('@/views/settings/adminFilters/index.vue')
+        },
+        {
+          // 添加过滤器
+          path: '/settings/adminFilters/new',
+          name: 'settings-adminFilters-new',
+          component: () => import('@/views/settings/adminFilters/new.vue')
+        },
+        {
+          // 编辑过滤器
+          path: '/settings/adminFilters/edit',
+          name: 'settings-adminFilters-edit',
+          component: () => import('@/views/settings/adminFilters/edit.vue')
         }
       ]
     }
