@@ -47,7 +47,8 @@ export default defineConfig({
     preprocessorOptions: {
       // 导入scss预编译程序
       scss: {
-        additionalData: `@import "@/assets/styles/mixin.scss";`
+        additionalData: `@import "@/assets/styles/mixin.scss";`,
+        api: "modern-compiler"
       }
     }
   },
