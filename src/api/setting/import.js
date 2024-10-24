@@ -4,6 +4,6 @@ export const importData = (data) => {
   return request({
     url: '/_api/admin/imports/upload',
     method: 'post',
-    body: data,
+    data,
   });
 };

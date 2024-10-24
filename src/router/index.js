@@ -122,6 +122,18 @@ const router = createRouter({
           path: '/settings/adminFilters/edit',
           name: 'settings-adminFilters-edit',
           component: () => import('@/views/settings/adminFilters/edit.vue')
+        },
+        {
+          // 导入和导出
+          path: '/settings/import',
+          name: 'settings-import',
+          component: () => import('@/views/settings/import/index.vue')
+        },
+        {
+          // 导出
+          path: '/settings/export',
+          name: 'settings-export',
+          component: () => import('@/views/settings/export/index.vue')
         }
       ]
     }
