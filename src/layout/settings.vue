@@ -74,7 +74,7 @@ const adminMenuList = [
       },
       {
         label: t('admin.menu.instances'),
-        key: 'settings-adminInstances'
+        key: 'settings-instances'
       },
       {
         label: t('admin.emailDomain.title'),

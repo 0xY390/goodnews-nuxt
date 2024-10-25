@@ -159,6 +159,12 @@ const router = createRouter({
           name: 'settings-followRecommend',
           component: () => import('@/views/settings/followRecommend/index.vue')
         },
+        {
+          // 运营-已知实例
+          path: '/settings/instances',
+          name: 'settings-instances',
+          component: () => import('@/views/settings/instances/index.vue')
+        }
       ]
     }
   ]
