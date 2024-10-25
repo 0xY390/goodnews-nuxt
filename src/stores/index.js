@@ -7,6 +7,7 @@ import { useSearchStore } from './modules/search'
 import { useWsTweetStore } from './modules/wsTweet'
 import { useCacheDataStore } from './modules/cacheData'
 import { useArticleStore } from './modules/articleStore'
+import { useTransferStore } from './modules/transfer'
 export {
   useUserStore,
   useLoginModalStore,
@@ -16,5 +17,6 @@ export {
   useSearchStore,
   useWsTweetStore,
   useCacheDataStore,
-  useArticleStore
+  useArticleStore,
+  useTransferStore
 }

@@ -142,11 +142,23 @@ const router = createRouter({
           component: () => import('@/views/settings/report/index.vue')
         },
         {
+          // 运营-用户
+          path: '/settings/accounts',
+          name: 'settings-accounts',
+          component: () => import('@/views/settings/accounts/index.vue')
+        },
+        {
+          // 运营-用户详情
+          path: '/settings/accounts/detail/:id',
+          name: 'settings-accounts-id',
+          component: () => import('@/views/settings/accounts/detail/[id].vue')
+        },
+        {
           // 运营-关注推荐
           path: '/settings/followRecommend',
           name: 'settings-followRecommend',
           component: () => import('@/views/settings/followRecommend/index.vue')
-        }
+        },
       ]
     }
   ]

@@ -66,7 +66,7 @@ const adminMenuList = [
       },
       {
         label: t('admin.menu.accounts'),
-        key: 'settings-adminAccounts'
+        key: 'settings-accounts'
       },
       {
         label: t('admin.followRecommend.title'),
