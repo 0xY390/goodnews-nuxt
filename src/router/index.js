@@ -164,6 +164,12 @@ const router = createRouter({
           path: '/settings/instances',
           name: 'settings-instances',
           component: () => import('@/views/settings/instances/index.vue')
+        },
+        {
+          // 运营-已知实例详情
+          path: '/settings/instances/detail/:domain',
+          name: 'settings-instances-domain',
+          component: () => import('@/views/settings/instances/detail/[domain].vue')
         }
       ]
     }

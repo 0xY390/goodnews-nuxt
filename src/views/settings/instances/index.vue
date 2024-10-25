@@ -83,7 +83,7 @@ getUserListAsync()
 
 const router = useRouter()
 const tableRowProps = val => {
-  router.push(`/settings/adminInstances/detail/${val.domain}`)
+  router.push(`/settings/instances/detail/${val.domain}`)
 }
 
 const windowWidth = ref(window.innerWidth)

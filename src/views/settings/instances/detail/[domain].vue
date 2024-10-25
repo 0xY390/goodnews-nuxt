@@ -1,62 +1,66 @@
 <script setup>
-definePageMeta({
-  layout: 'settings',
-  name: 'settings-adminInstances-detail',
-  middleware: ['auth'],
-});
-import { getInstanceDetail, putInstanceSetting } from '@/api/admin/instance';
-import PanelComp from '@/components/PanelComp/index.vue';
-import { formatFileSize } from '@/utils';
-const { t } = useI18n();
-
-const route = useRoute();
-const pageData = ref({});
-const panelData = ref([]);
-const loading = ref(false);
+import { getInstanceDetail, putInstanceSetting } from '@/api/admin/instance'
+import PanelComp from '@/components/PanelComp/index.vue'
+import { formatFileSize } from '@/utils'
+const { t } = useI18n()
+const route = useRoute()
+const pageData = ref({})
+const panelData = ref([])
+const loading = ref(false)
 const getData = async () => {
   try {
-    loading.value = true;
-    const res = await getInstanceDetail(route.params.domain);
-    pageData.value = res;
+    loading.value = true
+    const res = await getInstanceDetail(route.params.domain)
+    pageData.value = res
     panelData.value = [
       { total: res.account_count, label: t('admin.instances.details.account') },
       { total: res.status_count, label: t('public.tweet') },
-      { total: formatFileSize(res.attachment_sum, 'b'), label: t('admin.instances.details.media') },
-      { total: res.follow_count, label: t('admin.instances.details.followers') },
-      { total: res.follower_count, label: t('admin.instances.details.following') },
-      { total: res.mostFollowed, label: t('admin.instances.details.reports') },
-    ];
+      {
+        total: formatFileSize(res.attachment_sum, 'b'),
+        label: t('admin.instances.details.media')
+      },
+      {
+        total: res.follow_count,
+        label: t('admin.instances.details.followers')
+      },
+      {
+        total: res.follower_count,
+        label: t('admin.instances.details.following')
+      },
+      { total: res.mostFollowed, label: t('admin.instances.details.reports') }
+    ]
     if (res.instance) {
-      instanceSettingData['is_disable_download'] = !!res.instance.is_disable_download;
-      instanceSettingData['is_proxy'] = !!res.instance.is_proxy;
-      instanceSettingData['is_disable_sync'] = !!res.instance.is_disable_sync;
+      instanceSettingData['is_disable_download'] =
+        !!res.instance.is_disable_download
+      instanceSettingData['is_proxy'] = !!res.instance.is_proxy
+      instanceSettingData['is_disable_sync'] = !!res.instance.is_disable_sync
     }
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
-getData();
+}
+getData()
 const instanceSettingData = reactive({
   is_disable_download: false,
   is_proxy: false,
-  is_disable_sync: false,
-});
+  is_disable_sync: false
+})
 
 const settingChange = async (settingKey, settingValue) => {
   try {
-    loading.value = true;
+    loading.value = true
     const res = await putInstanceSetting(route.params.domain, {
-      [settingKey]: settingValue ? 1 : 0,
-    });
-    getData();
+      [settingKey]: settingValue ? 1 : 0
+    })
+    getData()
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
-const router = useRouter();
-const goRouter = (path) => {
-  router.push(path);
-};
+}
+const router = useRouter()
+const goRouter = path => {
+  router.push(path)
+}
 </script>
 
 <template>
@@ -79,9 +83,15 @@ const goRouter = (path) => {
                 </h4>
                 <table>
                   <tbody>
-                    <tr class="dimension__item" v-for="item in pageData.follower_rank">
+                    <tr
+                      class="dimension__item"
+                      v-for="item in pageData.follower_rank"
+                    >
                       <UserCard :account="item">
-                        <td class="dimension__item__key" @click="goRouter(`/user/${item.acct}`)">
+                        <td
+                          class="dimension__item__key"
+                          @click="goRouter(`/user/${item.acct}`)"
+                        >
                           <span class="dimension__item__indicator"></span>
                           <span :title="item.acct">{{ item.username }}</span>
                         </td>
@@ -95,17 +105,24 @@ const goRouter = (path) => {
         </div>
 
         <a-space size="large">
-          <a-spin :loading="settingChangeLoading">
-            <a-checkbox @change="settingChange('is_disable_download', $event)" v-model="instanceSettingData.is_disable_download">
-              {{ t('admin.instances.thisInstanceDoesNotDownloadAttachments') }}
-            </a-checkbox>
-            <a-checkbox @change="settingChange('is_proxy', $event)" v-model="instanceSettingData.is_proxy">
-              {{ t('admin.instances.reverseProxyAttachmentLinks') }}
-            </a-checkbox>
-            <a-checkbox @change="settingChange('is_disable_sync', $event)" v-model="instanceSettingData.is_disable_sync">
-              {{ t('admin.instances.stopSyncingContentFromThisInstance') }}
-            </a-checkbox>
-          </a-spin>
+          <a-checkbox
+            @change="settingChange('is_disable_download', $event)"
+            v-model="instanceSettingData.is_disable_download"
+          >
+            {{ t('admin.instances.thisInstanceDoesNotDownloadAttachments') }}
+          </a-checkbox>
+          <a-checkbox
+            @change="settingChange('is_proxy', $event)"
+            v-model="instanceSettingData.is_proxy"
+          >
+            {{ t('admin.instances.reverseProxyAttachmentLinks') }}
+          </a-checkbox>
+          <a-checkbox
+            @change="settingChange('is_disable_sync', $event)"
+            v-model="instanceSettingData.is_disable_sync"
+          >
+            {{ t('admin.instances.stopSyncingContentFromThisInstance') }}
+          </a-checkbox>
         </a-space>
         <hr class="spacer" />
         <h3>
@@ -126,9 +143,13 @@ const goRouter = (path) => {
           <div class="availability-indicator__hint">
             <span class="positive-hint">
               {{
-                !pageData?.availability?.some((item) => item.status === false)
+                !pageData?.availability?.some(item => item.status === false)
                   ? $t('admin.instances.details.noFailure')
-                  : $t('admin.instances.details.failure', { count: pageData.availability.filter((item) => item.status === false).length })
+                  : $t('admin.instances.details.failure', {
+                      count: pageData.availability.filter(
+                        item => item.status === false
+                      ).length
+                    })
               }}
             </span>
           </div>
