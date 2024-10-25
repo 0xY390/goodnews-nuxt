@@ -134,6 +134,12 @@ const router = createRouter({
           path: '/settings/export',
           name: 'settings-export',
           component: () => import('@/views/settings/export/index.vue')
+        },
+        {
+          // 运营-举报
+          path: '/settings/reports',
+          name: 'settings-reports',
+          component: () => import('@/views/settings/report/index.vue')
         }
       ]
     }
