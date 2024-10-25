@@ -140,6 +140,12 @@ const router = createRouter({
           path: '/settings/reports',
           name: 'settings-reports',
           component: () => import('@/views/settings/report/index.vue')
+        },
+        {
+          // 运营-关注推荐
+          path: '/settings/followRecommend',
+          name: 'settings-followRecommend',
+          component: () => import('@/views/settings/followRecommend/index.vue')
         }
       ]
     }
