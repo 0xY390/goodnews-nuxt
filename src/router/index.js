@@ -200,6 +200,12 @@ const router = createRouter({
           path: '/settings/nsq',
           name: 'settings-nsq',
           component: () => import('@/views/settings/nsq/index.vue')
+        },
+        {
+          // 管理-信息面板
+          path: '/settings/dashboard',
+          name: 'settings-dashboard',
+          component: () => import('@/views/settings/dashboard/index.vue')
         }
       ]
     }

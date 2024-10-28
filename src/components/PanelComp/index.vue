@@ -2,29 +2,37 @@
 const props = defineProps({
   hasPending: {
     type: Boolean,
-    default: false,
+    default: false
   },
   hasPencent: {
     type: Boolean,
-    default: false,
+    default: false
   },
   data: {
     type: Array,
     required: true,
-    default: () => [],
-  },
-});
+    default: () => []
+  }
+})
 </script>
 
 <template>
   <div class="dashboard">
-    <div v-for="(item, index) in props.data" :key="index" class="dashboard__item">
+    <div
+      v-for="(item, index) in props.data"
+      :key="index"
+      class="dashboard__item"
+    >
       <a class="sparkline">
         <div class="sparkline__value">
           <span class="sparkline__value__total">
             {{ item.total || 0 }}
           </span>
-          <span v-show="hasPencent" class="sparkline__value__change" :class="item.rise ? 'positive' : 'negative'">
+          <span
+            v-show="hasPencent"
+            class="sparkline__value__change"
+            :class="item.rise ? 'positive' : 'negative'"
+          >
             {{ item.rate > 0 ? '+' : '' }}
             {{ item.rate || 0 }}%
           </span>
@@ -74,7 +82,7 @@ const props = defineProps({
     --bg-option: 0.1;
     display: block;
     text-decoration: none;
-    background: var(--color-neutral-2);
+    background: rgba(var(--gray-4), var(--bg-option));
     border-radius: 4px;
     position: relative;
     overflow: hidden;
@@ -119,7 +127,7 @@ const props = defineProps({
     display: flex;
     align-items: baseline;
     border-radius: 4px;
-    background-color: var(--arcoblue-6);
+    background-color: rgb(var(--arcoblue-6));
     color: #000;
     transition: all 0.1s ease-in;
     font-size: 14px;
