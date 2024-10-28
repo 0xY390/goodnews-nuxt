@@ -271,6 +271,12 @@ export default {
         'This is the basic role that affects all users, including those who are not assigned a specific role. All other roles inherit its permissions.',
       defaultPermissions: 'Default permissions',
       permissions: 'Permissions',
+      'manage instance rules': 'manage instance rules',
+      'manage roles': 'manage roles',
+      'manage branding settings': 'manage branding settings',
+      'manage about settings': 'manage about settings',
+      operation: 'operation',
+      'manage account': 'manage account',
     },
     instances: {
       menuTitle: 'Instances',
