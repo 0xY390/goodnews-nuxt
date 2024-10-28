@@ -11,7 +11,7 @@ export const addRule = (data) => {
   return request({
     url: '/admin/api/rule/create',
     method: 'post',
-    body: data,
+    data,
   });
 };
 // 删除规则

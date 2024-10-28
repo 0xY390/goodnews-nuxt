@@ -212,6 +212,12 @@ const router = createRouter({
           path: '/settings/serverSetup',
           name: 'settings-serverSetup',
           component: () => import('@/views/settings/serverSetup/index.vue')
+        },
+        {
+          // 管理-实例规则
+          path: '/settings/rule',
+          name: 'settings-rule',
+          component: () => import('@/views/settings/rule/index.vue')
         }
       ]
     }
