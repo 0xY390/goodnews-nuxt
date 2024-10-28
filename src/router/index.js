@@ -13,7 +13,7 @@ const loginGuard = () => {
   }
 }
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -170,6 +170,18 @@ const router = createRouter({
           path: '/settings/instances/detail/:domain',
           name: 'settings-instances-domain',
           component: () => import('@/views/settings/instances/detail/[domain].vue')
+        },
+        {
+          // 运营-电子邮件域名屏蔽
+          path: '/settings/emailDomainBlocks',
+          name: 'settings-emailDomainBlocks',
+          component: () => import('@/views/settings/emailDomainBlocks/index.vue')
+        },
+        {
+          // 运营-电子邮件域名屏蔽-添加
+          path: '/settings/emailDomainBlocks/new',
+          name: 'settings-emailDomainBlocks-new',
+          component: () => import('@/views/settings/emailDomainBlocks/new.vue')
         }
       ]
     }
