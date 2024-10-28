@@ -194,6 +194,12 @@ const router = createRouter({
           path: '/settings/ipRules/add',
           name: 'settings-ipRules-add',
           component: () => import('@/views/settings/ipRules/add.vue')
+        },
+        {
+          // 队列
+          path: '/settings/nsq',
+          name: 'settings-nsq',
+          component: () => import('@/views/settings/nsq/index.vue')
         }
       ]
     }
