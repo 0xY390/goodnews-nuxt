@@ -13,7 +13,6 @@ export function useWebSocket(url, { onMessage }) {
 
   const connect = () => {
     // 客户端链接
-    if (!process.client) return;
     watchEffect(() => {
       socket.value = new WebSocket(url.value);
     });

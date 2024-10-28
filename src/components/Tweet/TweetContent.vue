@@ -25,7 +25,7 @@ const props = defineProps({
   }
 })
 const userStore = useUserStore()
-const { userInfo } = userStore
+const { userInfo } = storeToRefs(userStore)
 
 // 是不是本人的推文
 const isSelf = computed(() => userInfo.value?.id === props.status.account.id)

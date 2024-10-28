@@ -23,7 +23,7 @@ const subscribe = (key) => {
 
 export const initWebSocket = () => {
   const token = getToken();
-  const url = computed(() => `${baseURL}/api/v1/streaming?token=${token.value}`);
+  const url = computed(() => `${baseURL}/api/v1/streaming?token=${token}`);
   const onMessageCb = (data) => {
     const { event, payload } = data;
     const type = data.stream?.[0];
@@ -37,7 +37,7 @@ export const initWebSocket = () => {
   const currentSubscription = ref(null);
 
   watchEffect(() => {
-    if (!token.value) {
+    if (!token) {
       close();
     } else {
       connect();

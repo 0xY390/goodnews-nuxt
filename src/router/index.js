@@ -23,6 +23,7 @@ const router = createRouter({
         {
           path: '/',
           name: 'home',
+          alias: '/page-maxid-:maxid?',
           component: () => import('../views/index.vue'),
           // 路由守卫
           beforeEnter: (to, from, next) => {
@@ -35,6 +36,12 @@ const router = createRouter({
           path: '/user/:acct',
           name: 'acct',
           component: () => import('@/views/user/index.vue')
+        },
+        // 推文详情
+        {
+          path: '/user/:acct/status/:id',
+          name: 'tweet-status',
+          component: () => import('@/views/user/status/[id].vue')
         },
         {
           // 通知
