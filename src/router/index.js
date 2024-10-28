@@ -206,6 +206,12 @@ const router = createRouter({
           path: '/settings/dashboard',
           name: 'settings-dashboard',
           component: () => import('@/views/settings/dashboard/index.vue')
+        },
+        {
+          // 管理-服务器设置
+          path: '/settings/serverSetup',
+          name: 'settings-serverSetup',
+          component: () => import('@/views/settings/serverSetup/index.vue')
         }
       ]
     }
