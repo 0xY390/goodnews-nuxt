@@ -182,6 +182,18 @@ const router = createRouter({
           path: '/settings/emailDomainBlocks/new',
           name: 'settings-emailDomainBlocks-new',
           component: () => import('@/views/settings/emailDomainBlocks/new.vue')
+        },
+        {
+          // 运营-ip规则
+          path: '/settings/ipRules',
+          name: 'settings-ipRules',
+          component: () => import('@/views/settings/ipRules/index.vue')
+        },
+        {
+          // 运营-ip规则-添加
+          path: '/settings/ipRules/add',
+          name: 'settings-ipRules-add',
+          component: () => import('@/views/settings/ipRules/add.vue')
         }
       ]
     }
