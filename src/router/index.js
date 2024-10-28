@@ -236,6 +236,18 @@ const router = createRouter({
           path: '/settings/role/edit',
           name: 'settings-role-edit',
           component: () => import('@/views/settings/role/edit.vue')
+        },
+        {
+          // 管理-中继站
+          path: '/settings/relayStation',
+          name: 'settings-relayStation',
+          component: () => import('@/views/settings/relayStation/index.vue')
+        },
+        {
+          // 管理-中继站-添加
+          path: '/settings/relayStation/new',
+          name: 'settings-relayStation-new',
+          component: () => import('@/views/settings/relayStation/new.vue')
         }
       ]
     }

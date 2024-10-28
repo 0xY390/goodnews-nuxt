@@ -31,10 +31,10 @@ export const del = (id) => {
 };
 
 // 添加并启用
-export const addAndEnable = ({ inbox_url: string }) => {
+export const addAndEnable = (data) => {
   return request({
     url: `/_api/admin/relays`,
     method: 'POST',
-    body: JSON.stringify({ inbox_url: string }),
+    data
   });
 };
