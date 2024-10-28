@@ -218,6 +218,24 @@ const router = createRouter({
           path: '/settings/rule',
           name: 'settings-rule',
           component: () => import('@/views/settings/rule/index.vue')
+        },
+        {
+          // 管理-角色
+          path: '/settings/role',
+          name: 'settings-role',
+          component: () => import('@/views/settings/role/index.vue')
+        },
+        {
+          // 管理-角色-添加
+          path: '/settings/role/new',
+          name: 'settings-role-new',
+          component: () => import('@/views/settings/role/new.vue')
+        },
+        {
+          // 管理-角色-编辑
+          path: '/settings/role/edit',
+          name: 'settings-role-edit',
+          component: () => import('@/views/settings/role/edit.vue')
         }
       ]
     }

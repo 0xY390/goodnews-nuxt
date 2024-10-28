@@ -112,7 +112,7 @@ const adminMenuList = [
       },
       {
         label: t('admin.menu.roles'),
-        key: 'settings-adminRoles'
+        key: 'settings-role'
       },
       {
         label: t('admin.menu.relayStation'),

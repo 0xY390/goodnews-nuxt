@@ -2,52 +2,59 @@ import request from '@/utils/request';
 
 // 获取角色列表
 export const getRoleList = () => {
-  return request(`/_api/admin/roles`, {
+  return request({
+    url: `/_api/admin/roles`,
     method: 'get',
-  });
-};
+  })
+}
 
 // 获取新增角色权限列表
-export const getCreateRoles = (params) => {
-  return request(`/_api/admin/roles/create`, {
+export const getCreateRoles = params => {
+  return request({
+    url: `/_api/admin/roles/create`,
     method: 'get',
-    params,
-  });
-};
+    params
+  })
+}
 
 // 新增角色
 export const createRole = (data) => {
-  return request(`/_api/admin/roles`, {
+  return request({
+    url: `/_api/admin/roles`,
     method: 'post',
-    body: data,
-  });
-};
+    data
+  })
+}
 
 // 编辑角色
 export const editRole = (data) => {
-  return request(`/_api/admin/roles/${data.id}`, {
+  return request({
+    url: `/_api/admin/roles/${data.id}`,
     method: 'PUT',
-    body: data,
-  });
-};
+    data,
+  })
+}
 
 // 编辑角色信息
 export const getEditRoles = (id) => {
-  return request(`/_api/admin/roles/${id}/edit`, {
+  return request({
+    url: `/_api/admin/roles/${id}/edit`,
     method: 'get',
-  });
-};
+  })
+}
 
-export const getUserList = (data) => {
-  return request(`/admin/api/user/list`, {
+export const getUserList = data => {
+  return request({
+    url: `/admin/api/user/list`,
     method: 'GET',
-    params: data,
-  });
-};
+    params: data
+  })
+}
 
-export const bannedUser = (data) => {
-  return request(`/admin/api/user/banned`, {
+export const bannedUser = data => {
+  return request({
+    url: `/admin/api/user/banned`,
     method: 'PUT',
-    body: data,
-  });
-};
+    data
+  })
+}

@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-
 export const useTransferStore = defineStore('transfer', () => {
   const roleId = ref('')
   const roleName = ref('')
@@ -9,20 +8,20 @@ export const useTransferStore = defineStore('transfer', () => {
   const followRequestsNum = ref(0)
   const manuallyApprovesFollower = ref(0)
 
-  const setRoleId = roleId => {
-    roleId.value = roleId
+  const setRoleId = data => {
+    roleId.value = data
   }
-  const setRoleName = roleName => {
-    roleName.value = roleName
+  const setRoleName = data => {
+    roleName.value = data
   }
-  const setNotificationsNum = notificationsNum => {
-    notificationsNum.value = notificationsNum
+  const setNotificationsNum = data => {
+    notificationsNum.value = data
   }
-  const setFollowRequestsNum = followRequestsNum => {
-    followRequestsNum.value = followRequestsNum
+  const setFollowRequestsNum = data => {
+    followRequestsNum.value = data
   }
-  const setManuallyApprovesFollower = num => {
-    manuallyApprovesFollower.value = num
+  const setManuallyApprovesFollower = data => {
+    manuallyApprovesFollower.value = data
   }
 
   return {

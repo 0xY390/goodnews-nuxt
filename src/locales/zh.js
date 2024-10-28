@@ -270,6 +270,12 @@ export default {
         '这是影响到 所有用户的基础角色，包括未指定角色的用户。 其他所有的角色都继承着它的权限。',
       defaultPermissions: '默认权限',
       permissions: '权限',
+      'manage instance rules': '管理实例规则',
+      'manage roles': '管理角色',
+      'manage branding settings': '管理招牌设置',
+      'manage about settings': '管理关于设置',
+      operation: '运营',
+      'manage account': '管理用户',
     },
     instances: {
       menuTitle: '实例',
