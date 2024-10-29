@@ -3,9 +3,9 @@
     <p class="link-footer-text">
       <template v-for="item in linkList" :key="item.name">
         <span v-if="item.tipText">{{ item.tipText }}</span>
-        <router-link :to="item.link" :target="item.target">{{
-          item.name
-        }}</router-link>
+        <router-link v-if="item.link" :to="item.link" :target="item.target">
+          {{ item.name }}
+        </router-link>
         <span v-if="item.showpoint">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
       </template>
     </p>

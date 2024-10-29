@@ -98,6 +98,12 @@ const router = createRouter({
           path: '/lists/:id',
           name: 'lists-id',
           component: () => import('@/views/lists/[id].vue')
+        },
+        {
+          // 关于
+          path: '/about',
+          name: 'about',
+          component: () => import('@/views/about/index.vue')
         }
       ]
     },
