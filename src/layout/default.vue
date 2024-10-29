@@ -581,15 +581,11 @@ const { logo } = useLogo()
                 <Icon icon="ri:quill-pen-fill" />
               </div>
             </router-link>
-            <router-link
-              class="mobile-handle-send"
-              v-else
-              @click="clickToLogin"
-            >
+            <a-link class="mobile-handle-send" v-else @click="clickToLogin">
               <div class="icon">
                 <Icon icon="ri:quill-pen-fill" />
               </div>
-            </router-link>
+            </a-link>
           </template>
         </div>
       </div>
@@ -1090,48 +1086,48 @@ const { logo } = useLogo()
     margin-top: auto;
   }
 }
-// @include respond('phone') {
-//   .mobile-handle-backtop {
-//     display: block;
-//   }
-//   .mobile-handle-btn {
-//     display: block;
-//   }
-//   .mobile-header {
-//     display: flex;
-//     &.hide {
-//       top: -60px;
-//     }
-//   }
+@include respond('phone') {
+  .mobile-handle-backtop {
+    display: block;
+  }
+  .mobile-handle-btn {
+    display: block;
+  }
+  .mobile-header {
+    display: flex;
+    &.hide {
+      top: -60px;
+    }
+  }
 
-//   .layout {
-//     --header-height: 60px;
-//     padding-top: var(--header-height);
-//     padding-bottom: 60px;
-//     transition: all 0.2s ease-out;
-//     &.hideHeader {
-//       --header-height: 0px;
-//     }
-//     .layout-container {
-//       width: 100%;
-//       gap: 0;
-//     }
+  .layout {
+    --header-height: 60px;
+    padding-top: var(--header-height);
+    padding-bottom: 60px;
+    transition: all 0.2s ease-out;
+    &.hideHeader {
+      --header-height: 0px;
+    }
+    .layout-container {
+      width: 100%;
+      gap: 0;
+    }
 
-//     .menu-area {
-//       display: none;
-//     }
-//     .panel-area {
-//       display: none;
-//     }
-//   }
+    .menu-area {
+      display: none;
+    }
+    .panel-area {
+      display: none;
+    }
+  }
 
-//   .mobile-footer {
-//     display: flex;
-//     &.hide {
-//       opacity: 0.3;
-//     }
-//   }
-// }
+  .mobile-footer {
+    display: flex;
+    &.hide {
+      opacity: 0.3;
+    }
+  }
+}
 </style>
 
 <style lang="scss">

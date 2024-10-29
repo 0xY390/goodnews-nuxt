@@ -116,6 +116,12 @@ const router = createRouter({
           path: '/blocks',
           name: 'blocks',
           component: () => import('@/views/blocks/index.vue')
+        },
+        {
+          // 移动端-发推
+          path: '/send',
+          name: 'send',
+          component: () => import('@/views/send/index.vue')
         }
       ]
     },
