@@ -281,6 +281,12 @@ const router = createRouter({
           component: () => import('@/views/settings/relayStation/new.vue')
         }
       ]
+    },
+    // 注册
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/register/index.vue')
     }
   ]
 })
