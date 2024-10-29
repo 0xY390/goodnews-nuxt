@@ -110,6 +110,12 @@ const router = createRouter({
           path: '/mutes',
           name: 'mutes',
           component: () => import('@/views/mutes/index.vue')
+        },
+        {
+          // 已拉黑的用户
+          path: '/blocks',
+          name: 'blocks',
+          component: () => import('@/views/blocks/index.vue')
         }
       ]
     },
