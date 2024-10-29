@@ -18,7 +18,7 @@ const seoTitle = computed(() => {
 })
 
 const pullLoading = ref(false)
-const { userInfo } = userStore
+const { userInfo } = storeToRefs(userStore)
 
 const apiOptions = computed(() => {
   if (!userInfo.value?.username) {
@@ -34,6 +34,7 @@ const state = reactive({
   finished: false
 })
 const getData = async () => {
+  console.log(`output->1`, 1)
   state.loading = true
   try {
     const res = await request({

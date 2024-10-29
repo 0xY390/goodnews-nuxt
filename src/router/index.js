@@ -24,12 +24,12 @@ const router = createRouter({
           path: '/',
           name: 'home',
           alias: '/page-maxid-:maxid?',
-          component: () => import('../views/index.vue'),
+          component: () => import('@/views/index.vue'),
           // 路由守卫
-          beforeEnter: (to, from, next) => {
-            loginGuard()
-            next()
-          }
+          // beforeEnter: (to, from, next) => {
+          //   loginGuard()
+          //   next()
+          // }
         },
         // 用户主页
         {
