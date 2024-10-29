@@ -104,6 +104,12 @@ const router = createRouter({
           path: '/about',
           name: 'about',
           component: () => import('@/views/about/index.vue')
+        },
+        {
+          // 已屏蔽的用户
+          path: '/mutes',
+          name: 'mutes',
+          component: () => import('@/views/mutes/index.vue')
         }
       ]
     },
