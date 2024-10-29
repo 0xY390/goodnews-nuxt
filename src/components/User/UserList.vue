@@ -35,32 +35,34 @@
     </div>
   </RealList>
 </template>
-<script setup lang="ts">
-import { ref } from 'vue'
+<script setup>
 import FollowButton from '@/components/Account/FollowButton.vue'
-
+import { getSearchData } from '@/api/search'
+const router = useRouter()
+const route = useRoute()
 const props = defineProps({
   url: {
     type: String,
     default: ''
   }
 })
-const dataList = ref<any[]>([])
+const dataList = ref([])
 const scrollbar = ref(true)
-const currentPage = ref(1)
+const currentPage = ref(0)
 const getListData = async () => {
   currentPage.value++
-  const { data } = await useMyFetch(props.url, {
-    method: 'get'
-  })
-  dataList.value.push(...data.value.data)
-  if (dataList.value.length >= data.value.total) scrollbar.value = false
+  const query = {
+    q: route.query.q,
+    type: 'accounts',
+    page: currentPage.value,
+    resolve: true
+  }
+  const res = await getSearchData(query)
+  dataList.value.push(...res.data)
+  if (dataList.value.length >= res.total) scrollbar.value = false
 }
 
-await getListData()
-
-const router = useRouter()
-const goRouter = (path: string) => {
+const goRouter = path => {
   router.push(path)
 }
 </script>

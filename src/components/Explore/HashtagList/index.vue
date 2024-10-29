@@ -9,13 +9,13 @@
       :key="hash.id"
       class="hashtag-item px-5 py-4 cursor-pointer hover:bg-light-primary/10"
     >
-      <NuxtLink
+      <router-link
         class="hashtag-item-text"
         :to="`/explore/hashtag/${hash.name}`"
         v-if="hash.name"
       >
         #{{ hash.name }}
-      </NuxtLink>
+      </router-link>
       <div class="hashtag-item-text" v-else @click="goTabsBlank">
         #{{ hash.name }}
       </div>
