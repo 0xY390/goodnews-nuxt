@@ -18,16 +18,6 @@ const router = useRouter()
 const closeModel = () => {
   loginModalStore.closeLoginModal()
   modalType.value = 'login'
-
-  const query = route.query
-  if (query.login === 'true') {
-    router.replace({
-      query: {
-        ...query,
-        login: undefined
-      }
-    })
-  }
 }
 import loginForm from './components/loginForm.vue'
 import forgetForm from './components/forgetForm.vue'
@@ -50,8 +40,8 @@ const { logo } = useLogo()
     @ok="handleOk"
     @cancel="handleCancel"
     :unmount-on-close="true"
-    :mask-closable="false"
     :footer="false"
+    mask-closable
   >
     <template #title></template>
     <div class="modal-content">
