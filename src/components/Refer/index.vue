@@ -1,73 +1,73 @@
 <script setup>
-import defaultAvatar from '@/assets/images/default-avatar.jpg';
-import { getHashTagData } from '~/api/search';
-const items = ref([]);
-const loading = ref(false);
-const emit = defineEmits(['confirm']);
+import defaultAvatar from '@/assets/images/default-avatar.jpg'
+import { getSearchData } from '~/api/search'
+const items = ref([])
+const loading = ref(false)
+const emit = defineEmits(['confirm'])
 const getList = async (searchText = null) => {
-  loading.value = true;
+  loading.value = true
   try {
-    const { data } = await getHashTagData({
+    const { data } = await getSearchData({
       q: '@' + searchText,
       page: 1,
       type: 'accounts',
-      resolve: true,
-    });
-    items.value = data;
+      resolve: true
+    })
+    items.value = data
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 // 是否开启上下键选择
 const enableUpDown = computed(() => {
-  return showRefer.value && !loading.value && items.value.length > 0;
-});
+  return showRefer.value && !loading.value && items.value.length > 0
+})
 // 快捷选中的索引
-const selectIndex = ref(0);
-const showRefer = defineModel();
+const selectIndex = ref(0)
+const showRefer = defineModel()
 // 关闭选择器
 const closeRefer = () => {
-  selectIndex.value = 0;
-  items.value = [];
-  showRefer.value = false;
-};
-const mouseSelect = (i) => {
-  selectIndex.value = i;
-  commitSelect();
-};
+  selectIndex.value = 0
+  items.value = []
+  showRefer.value = false
+}
+const mouseSelect = i => {
+  selectIndex.value = i
+  commitSelect()
+}
 // 选中的tab显示到编辑器中
 const commitSelect = () => {
-  const selectItem = items.value[selectIndex.value];
-  emit('confirm', selectItem);
-  closeRefer();
-};
+  const selectItem = items.value[selectIndex.value]
+  emit('confirm', selectItem)
+  closeRefer()
+}
 // 键盘上键
-const keydownUpFn = (event) => {
-  if (!enableUpDown.value) return;
-  event.preventDefault();
-  selectIndex.value = selectIndex.value - 1;
-};
+const keydownUpFn = event => {
+  if (!enableUpDown.value) return
+  event.preventDefault()
+  selectIndex.value = selectIndex.value - 1
+}
 // 键盘下键
-const keydownDownFn = (event) => {
-  if (!enableUpDown.value) return;
-  event.preventDefault();
-  selectIndex.value = selectIndex.value + 1;
-};
+const keydownDownFn = event => {
+  if (!enableUpDown.value) return
+  event.preventDefault()
+  selectIndex.value = selectIndex.value + 1
+}
 // 回车键
-const keydownEnterFn = (event) => {
-  if (!enableUpDown.value) return;
-  event.preventDefault();
-  commitSelect();
-};
+const keydownEnterFn = event => {
+  if (!enableUpDown.value) return
+  event.preventDefault()
+  commitSelect()
+}
 // tab建
-const keydownTabFn = (event) => {
-  if (!enableUpDown.value) return;
-  event.preventDefault();
-  commitSelect();
-};
-const searchByRefer = (e) => {
-  getList(e);
-};
+const keydownTabFn = event => {
+  if (!enableUpDown.value) return
+  event.preventDefault()
+  commitSelect()
+}
+const searchByRefer = e => {
+  getList(e)
+}
 
 // 暴露给父组件的方法
 defineExpose({
@@ -76,15 +76,26 @@ defineExpose({
   keydownDownFn,
   keydownEnterFn,
   keydownTabFn,
-  closeRefer,
-});
+  closeRefer
+})
 </script>
 
 <template>
-  <div class="refer-block" v-if="showRefer" v-show="loading || items.length" @keydown.down="keydownDownFn" onmousedown="return false;">
+  <div
+    class="refer-block"
+    v-if="showRefer"
+    v-show="loading || items.length"
+    @keydown.down="keydownDownFn"
+    onmousedown="return false;"
+  >
     <a-spin :loading="loading" class="loading-box">
       <a-scrollbar style="height: 300px; overflow: auto">
-        <div class="refer-item" v-for="(item, i) in items" :class="{ select: i === selectIndex }" @click="mouseSelect(i)">
+        <div
+          class="refer-item"
+          v-for="(item, i) in items"
+          :class="{ select: i === selectIndex }"
+          @click="mouseSelect(i)"
+        >
           <div class="user-photo">
             <a-image style="width: 40px; height: 40px" :src="defaultAvatar" />
           </div>

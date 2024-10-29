@@ -101,7 +101,7 @@ const editListSearch = ref('')
 const editList = e => {
   showEditListModal.value = true
 }
-import { getHashTagData } from '@/api/search'
+import { getSearchData } from '@/api/search'
 import { watchEffect } from 'vue'
 const searchUserList = ref([])
 const searchBtnLoading = ref(false)
@@ -113,7 +113,7 @@ const onEditListSearch = async () => {
     type: 'accounts'
   }
   searchBtnLoading.value = true
-  const { data: searchList } = await getHashTagData(query).finally(() => {
+  const { data: searchList } = await getSearchData(query).finally(() => {
     searchBtnLoading.value = false
   })
   showSearchDrawer.value = true

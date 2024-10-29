@@ -122,6 +122,17 @@ const router = createRouter({
           path: '/send',
           name: 'send',
           component: () => import('@/views/send/index.vue')
+        },
+        // 搜索
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import('@/views/search/index.vue')
+        },
+        {
+          path: '/search/:_type?',
+          name: 'search-type',
+          component: () => import('@/views/search/[_type].vue')
         }
       ]
     },
