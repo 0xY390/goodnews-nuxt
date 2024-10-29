@@ -5,6 +5,7 @@ import TweetBar from '@/components/Tweet/TweetBar.vue'
 import TweetContent from '@/components/Tweet/TweetContent.vue'
 import UserCard from '@/components/UserCard/index.vue'
 import { Message } from '@arco-design/web-vue'
+import { useUserStore, useLoginModalStore } from '@/stores'
 const loginModalStore = useLoginModalStore()
 const { t } = useI18n()
 const route = useRoute()
@@ -97,11 +98,11 @@ const getReplyTweetListData = async params => {
     acct: tweetData.value.account.acct,
     id: tweetData.value.id
   }
-  const { data } = await getTweetReplyList(tweetParams, params).finally(() => {
+  const res = await getTweetReplyList(tweetParams, params).finally(() => {
     tweetLoading.value = false
   })
-  replyTweetList.value.push(...Array.from(data.value.data))
-  if (replyTweetList.value.length >= Array.from(data.value.data).length) {
+  replyTweetList.value.push(...Array.from(res.data))
+  if (replyTweetList.value.length >= Array.from(res.data).length) {
     tweetFinished.value = true
   }
 }
