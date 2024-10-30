@@ -3,9 +3,16 @@
     <p class="link-footer-text">
       <template v-for="item in linkList" :key="item.name">
         <span v-if="item.tipText">{{ item.tipText }}</span>
-        <router-link v-if="item.link" :to="item.link" :target="item.target">
-          {{ item.name }}
-        </router-link>
+        <template v-if="isVueRouterLink(item.link)">
+          <router-link v-if="item.link" :to="item.link" :target="item.target">
+            {{ item.name }}
+          </router-link>
+        </template>
+        <template v-else>
+          <a :href="item.link" :target="item.target">
+            {{ item.name }}
+          </a>
+        </template>
         <span v-if="item.showpoint">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
       </template>
     </p>
@@ -75,6 +82,11 @@ const linkList = computed(() => {
 
   return result
 })
+
+// 是否是vue路由链接
+const isVueRouterLink = link => {
+  return link.startsWith('/')
+}
 </script>
 
 <style scoped lang="scss">
