@@ -4,7 +4,7 @@ export const useWsTweetStore = defineStore('wsTweet', () => {
     public: [],
     local: []
   })
-  const addTweet = (type, tweet) => {
+  const addTweet = (tweet, type) => {
     state[type].unshift(tweet)
   }
 

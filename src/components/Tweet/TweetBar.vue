@@ -2,6 +2,7 @@
 const { t } = useI18n()
 import { copyToClipboard } from '@/utils/index'
 import { useUserStore, useLoginModalStore } from '@/stores'
+import useMessage from '~/hooks/useMessage'
 const value = defineModel()
 const isFavor = computed(() => {
   return value.value.statuses_fave

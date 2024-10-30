@@ -1,5 +1,6 @@
 <script setup>
 import FilterModal from '@/components/FilterModal/index.vue'
+import useMessage from '~/hooks/useMessage'
 import {
   followUser,
   unfollowUser,

@@ -9,6 +9,7 @@ import { getTweetEditor } from '@/utils/editor.js'
 import mitt from '~/utils/mitt'
 import { useUserStore } from '@/stores'
 import SendTweetEditor from '@/components/SendTweetEditor/index.vue'
+import useMessage from '~/hooks/useMessage'
 const { t } = useI18n()
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)

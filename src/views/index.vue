@@ -34,7 +34,6 @@ const state = reactive({
   finished: false
 })
 const getData = async () => {
-  console.log(`output->1`, 1)
   state.loading = true
   try {
     const res = await request({
@@ -56,8 +55,13 @@ watchEffect(() => {
   getData()
 })
 
-const tweetList = computed(() => {
-  return state.data || []
+const tweetList = computed({
+  get() {
+    return state.data || []
+  },
+  set(value) {
+    state.data = value
+  }
 })
 
 import { useNewTweetToast } from '@/components/newTweetToast/index.js'
@@ -109,7 +113,7 @@ import { useWsTweetStore } from '@/stores'
 const useWsTweet = useWsTweetStore()
 
 const refresshTweetCb = () => {
-  const list = data.value?.list || []
+  const list = tweetList.value || []
   if (tweetList.length) {
     list.unshift(...tweetList)
   }
@@ -124,7 +128,7 @@ onMounted(() => {
   mitt.on('refresh-tweet-list', refresshTweetCb)
 
   subscribeHome((event, tweet) => {
-    const list = data.value?.list || []
+    const list = tweetList.value || []
     if (event === 'delete') {
       const index = list.findIndex(item => item.id === tweet)
 
@@ -134,8 +138,7 @@ onMounted(() => {
 
       return
     }
-
-    useWsTweet.addData(tweet, 'home')
+    useWsTweet.addTweet(tweet, 'home')
 
     tweet.attachments = tweet.media_attachments
     tweet.content_rendered = tweet.content
