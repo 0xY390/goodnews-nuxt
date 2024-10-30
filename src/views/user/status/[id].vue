@@ -90,7 +90,6 @@ const replyTweet = ref('')
 const tweetByReplyLoading = ref(false)
 
 const sendTweetByReply = async () => {
-  console.log(userInfo)
   if (!userInfo.value) {
     loginModalStore.openLoginModal()
     return
@@ -101,11 +100,10 @@ const sendTweetByReply = async () => {
 
   const params = {
     content: content,
-    reply_to_id: id,
+    reply_to_id: id.value,
     is_sensitive: false,
     attachments: []
   }
-
   const newReplyTweet = await replyToTweet(params).finally(() => {
     tweetByReplyLoading.value = false
   })
