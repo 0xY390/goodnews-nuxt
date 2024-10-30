@@ -98,7 +98,9 @@ const beforeUpload = async e => {
         handleUploadSuccess()
       }
     },
-    signal: controller.signal
+    signal: controller.signal,
+    // 最大超时时间
+    timeout: 1000 * 60 * 5
   }
   controllerList.push({ id: fileId, controller: controller })
 
