@@ -30,12 +30,20 @@ const router = createRouter({
           //   loginGuard()
           //   next()
           // }
+          meta: {
+            title: '首页',
+            keepAlive: true
+          }
         },
         // 用户主页
         {
           path: '/user/:acct',
           name: 'acct',
-          component: () => import('@/views/user/index.vue')
+          component: () => import('@/views/user/index.vue'),
+          meta: {
+            title: '用户主页',
+            keepAlive: true
+          }
         },
         // 推文详情
         {
@@ -71,27 +79,43 @@ const router = createRouter({
           // 书签
           path: '/bookmarks',
           name: 'bookmarks',
-          component: () => import('@/views/bookmarks/index.vue')
+          component: () => import('@/views/bookmarks/index.vue'),
+          meta: {
+            title: '书签',
+            keepAlive: true
+          }
         },
         {
           // 跨站时间轴
           path: '/public/common',
           name: 'public-common',
           alias: '/public/common/page-maxid-:maxid?',
-          component: () => import('@/views/public/common/index.vue')
+          component: () => import('@/views/public/common/index.vue'),
+          meta: {
+            title: '跨站公共时间轴',
+            keepAlive: true
+          }
         },
         {
           // 本地时间轴
           path: '/public/local',
           name: 'public-local',
           alias: '/public/local/page-maxid-:maxid?',
-          component: () => import('@/views/public/local/index.vue')
+          component: () => import('@/views/public/local/index.vue'),
+          meta: {
+            title: '本地时间轴',
+            keepAlive: true
+          }
         },
         {
           // 列表
           path: '/lists',
           name: 'lists',
-          component: () => import('@/views/lists/index.vue')
+          component: () => import('@/views/lists/index.vue'),
+          meta: {
+            title: '列表',
+            keepAlive: true
+          }
         },
         {
           // 列表详情

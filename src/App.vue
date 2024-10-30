@@ -1,4 +1,5 @@
 <script setup>
+import useScroll from '@/hooks/useScroll'
 import LoginModal from '@/components/LoginModal/index.vue'
 import ChangePasswordModal from '@/components/ChangePasswordModal/index.vue'
 const router = useRouter()
@@ -6,6 +7,10 @@ const route = useRoute()
 const isDark = ref(false)
 provide('isDark', isDark)
 onMounted(async () => {
+  // 初始化滚动
+  const html = document.querySelector('html')
+  useScroll().initScroll(html)
+
   // 深色模式
   const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)')
   const prefersDarkMode = darkThemeMq.matches

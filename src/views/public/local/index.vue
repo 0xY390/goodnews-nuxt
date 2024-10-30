@@ -1,16 +1,9 @@
-<script setup>
+<script setup name="public-local">
 import loadingIcon from '~/components/loadingIcon/index.vue'
 import { getTweetsByLocal } from '~/api/tweet'
 import useScroll from '@/hooks/useScroll.js'
 const { t } = useI18n()
 const route = useRoute()
-
-const seoTitle = computed(() => {
-  if (route.params.maxid) {
-    return t('timeline.localHeadForMaxid', { maxid: route.params.maxid })
-  }
-  return t('timeline.localHead')
-})
 
 const pullLoading = ref(false)
 

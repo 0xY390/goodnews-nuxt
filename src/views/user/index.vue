@@ -1,4 +1,4 @@
-<script setup>
+<script setup name="acct">
 import TweetMessages from '@/components/Tweet/TweetMessages.vue'
 import PageHeader from '@/components/PageHeader/index.vue'
 import { useUserStore, useCacheDataStore } from '@/stores'

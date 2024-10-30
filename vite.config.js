@@ -8,6 +8,7 @@ import Components from 'unplugin-vue-components/vite';
 import { vitePluginForArco } from '@arco-plugins/vite-vue'
 import { svgBuilder } from './src/plugins/Builder' // svg导入
 import { VantResolver } from '@vant/auto-import-resolver';
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -31,6 +32,7 @@ export default defineConfig({
       style: 'css'
     }),
     svgBuilder('./src/assets/icons/'),
+    VueSetupExtend(), // 设置组件name
     // vant按需引入
   ],
   resolve: {

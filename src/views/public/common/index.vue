@@ -1,16 +1,9 @@
-<script setup>
+<script setup name="public-common">
 import loadingIcon from '~/components/loadingIcon/index.vue'
 import { getTimeLineData } from '~/api/tweet'
 import useScroll from '@/hooks/useScroll.js'
 const { t } = useI18n()
 const route = useRoute()
-
-const seoTitle = computed(() => {
-  if (route.params.maxid) {
-    return t('timeline.publicHeadForMaxid', { maxid: route.params.maxid })
-  }
-  return t('timeline.publicHead')
-})
 
 const pullLoading = ref(false)
 import mitt from '@/utils/mitt'

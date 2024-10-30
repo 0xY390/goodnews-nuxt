@@ -393,6 +393,9 @@ const backTopTarget = e => {
 import useLogo from '@/hooks/useLogo'
 import { SvgIcon } from '@/components'
 const { logo } = useLogo()
+
+const keepAliveRoutes = router.getRoutes().filter(route => route.meta.keepAlive)
+const keepAliveNames = keepAliveRoutes.map(route => route.name)
 </script>
 
 <template>
@@ -555,7 +558,11 @@ const { logo } = useLogo()
         </div>
       </div>
       <div class="main-area">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <keep-alive :include="keepAliveNames">
+            <component :is="Component" :key="route.fullPath" />
+          </keep-alive>
+        </router-view>
       </div>
       <div class="panel-area" v-if="showRightPanel">
         <div class="panel-container">

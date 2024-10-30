@@ -1,4 +1,4 @@
-<script setup>
+<script setup name="home">
 import TweetMessages from '@/components/Tweet/TweetMessages.vue'
 import loadingIcon from '~/components/loadingIcon/index.vue'
 import mitt from '@/utils/mitt.js'
@@ -9,13 +9,6 @@ const userStore = useUserStore()
 const { t } = useI18n()
 const componentName = 'home'
 const route = useRoute()
-
-const seoTitle = computed(() => {
-  if (route.params.maxid) {
-    return t('timeline.homeHeadForMaxid', { maxid: route.params.maxid })
-  }
-  return t('timeline.homeHead')
-})
 
 const pullLoading = ref(false)
 const { userInfo } = storeToRefs(userStore)
@@ -180,9 +173,10 @@ onDeactivated(() => {
   useScroll().setScrollCache(componentName)
 })
 
-onActivated(() => {
+onActivated(async () => {
   const { getScrollCache, toScroll } = useScroll()
   const scrollTop = getScrollCache(componentName)
+  await nextTick()
   toScroll(scrollTop)
 })
 
