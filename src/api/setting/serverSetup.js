@@ -13,7 +13,7 @@ export const setSettingBranding = (data) => {
   return request({
     url: '/_api/admin/settings/branding',
     method: 'PUT',
-    body: data,
+    data,
   });
 };
 
@@ -30,7 +30,7 @@ export const setSettingAbout = (data) => {
   return request({
     url: '/_api/admin/settings/about',
     method: 'PUT',
-    body: data,
+    data,
   });
 };
 
@@ -68,6 +68,6 @@ export const setSettingSitive = (data) => {
   return request({
     url: '/_api/admin/settings/branding',
     method: 'PUT',
-    body: formData,
+    data: formData,
   });
 };

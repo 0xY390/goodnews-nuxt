@@ -4,7 +4,7 @@ export const read = (data) => {
   return request({
     url: '/_api/v1/notifications/read',
     method: 'PUT',
-    body: data,
+    data,
   });
 };
 
