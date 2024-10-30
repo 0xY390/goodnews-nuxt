@@ -44,8 +44,8 @@ const menuList = computed(() => {
       name: 'home',
       label: t('layout.home'),
       path: '/',
-      icon: 'mingcute:home-5-line',
-      icon_active: 'mingcute:home-5-fill',
+      icon: 'menu-icon-house',
+      icon_active: 'menu-icon-house-fill',
       isMobileActive: () => {
         const activeNames = ['home', 'public-common', 'public-local']
         return activeNames.includes(route.name)
@@ -55,8 +55,8 @@ const menuList = computed(() => {
       name: 'notification',
       label: t('layout.notification'),
       path: `/notifications`,
-      icon: 'iconamoon:notification',
-      icon_active: 'iconamoon:notification-fill',
+      icon: 'menu-icon-notification',
+      icon_active: 'menu-icon-notification-fill',
       badge: notificationsNum.value.notifications,
       isShow: () => {
         return userInfo.value?.acct
@@ -66,8 +66,8 @@ const menuList = computed(() => {
       name: 'followRequests',
       label: t('followRequests.title'),
       path: `/followRequests`,
-      icon: 'ri:user-follow-line',
-      icon_active: 'ri:user-follow-fill',
+      icon: 'menu-icon-follow-request',
+      icon_active: 'menu-icon-follow-request-fill',
       badge: notificationsNum.value.follow_requests,
       isShow: () => {
         return userInfo.value?.acct && notificationsNum.value?.follow_requests
@@ -78,8 +78,8 @@ const menuList = computed(() => {
       name: 'message',
       label: t('message.title'),
       path: `/message`,
-      icon: 'mingcute:message-3-line',
-      icon_active: 'mingcute:message-3-fill',
+      icon: 'menu-icon-message',
+      icon_active: 'menu-icon-message-fill',
       badge: notificationsNum.value.direct_messages,
       isShow: () => {
         return userInfo.value?.acct
@@ -89,8 +89,8 @@ const menuList = computed(() => {
       name: 'bookmarks',
       label: t('bookmark.title'),
       path: `/bookmarks`,
-      icon: 'material-symbols:bookmark-outline-rounded',
-      icon_active: 'material-symbols:bookmark-rounded',
+      icon: 'menu-icon-bookmark',
+      icon_active: 'menu-icon-bookmark-fill',
       isShow: () => {
         return userInfo.value?.acct
       },
@@ -100,8 +100,8 @@ const menuList = computed(() => {
       name: 'acct',
       label: t('profile.title'),
       path: `/user/${userInfo.value?.acct}`,
-      icon: 'iconamoon:profile',
-      icon_active: 'iconamoon:profile-fill',
+      icon: 'menu-icon-profile',
+      icon_active: 'menu-icon-profile-fill',
       isShow: () => {
         return userInfo.value?.acct
       },
@@ -113,11 +113,11 @@ const menuList = computed(() => {
       mobileShow: () => false
     },
     {
-      name: 'public',
+      name: 'public-common',
       label: t('timeline.public'),
       path: '/public/common',
-      icon: 'ph:globe-hemisphere-west-bold',
-      icon_active: 'ph:globe-hemisphere-west-fill',
+      icon: 'menu-icon-common',
+      icon_active: 'menu-icon-common-fill',
       isActive: () => {
         return route.name === 'public-common'
       },
@@ -129,8 +129,11 @@ const menuList = computed(() => {
       name: 'public-local',
       label: t('timeline.local'),
       path: '/public/local',
-      icon: 'material-symbols:interactive-space-outline',
-      icon_active: 'material-symbols:interactive-space',
+      icon: 'menu-icon-local',
+      icon_active: 'menu-icon-local-fill',
+      isActive: () => {
+        return route.name === 'public-local'
+      },
       mobileShow: () => {
         return false
       }
@@ -139,8 +142,8 @@ const menuList = computed(() => {
       name: 'lists',
       label: t('list.title'),
       path: '/lists',
-      icon: 'material-symbols-light:lists-rounded',
-      icon_active: 'material-symbols:lists-rounded',
+      icon: 'menu-icon-list',
+      icon_active: 'menu-icon-list-fill',
       isShow: () => {
         return userInfo.value?.acct
       },
@@ -152,8 +155,8 @@ const menuList = computed(() => {
       name: 'settings-profile',
       label: t('layout.preferences'),
       path: '/settings/profile',
-      icon: 'tabler:settings',
-      icon_active: 'tabler:settings-filled',
+      icon: 'menu-icon-settings',
+      icon_active: 'menu-icon-settings-fill',
       divid: true,
       isShow: () => {
         return userInfo.value?.acct
@@ -166,8 +169,8 @@ const menuList = computed(() => {
       name: 'about',
       label: t('about.title'),
       path: '/about',
-      icon: 'mdi:information-outline',
-      icon_active: 'mdi:information',
+      icon: 'menu-icon-about',
+      icon_active: 'menu-icon-about-fill',
       mobileShow: () => {
         return false
       }
@@ -388,6 +391,7 @@ const backTopTarget = e => {
   if (!showMobileFooter.value) showMobileFooter.value = true
 }
 import useLogo from '@/hooks/useLogo'
+import { SvgIcon } from '@/components'
 const { logo } = useLogo()
 </script>
 
@@ -450,8 +454,8 @@ const { logo } = useLogo()
                 }"
               >
                 <div class="menu-panel_link-icon">
-                  <Icon
-                    :icon="
+                  <SvgIcon
+                    :name="
                       item.isActive?.() || route.name?.includes(item.name)
                         ? item.icon_active
                         : item.icon
@@ -484,16 +488,16 @@ const { logo } = useLogo()
               </div>
             </template>
             <template v-else>
-              <div class="menu-panel-user">
-                <a-trigger
-                  position="top"
-                  auto-fit-position
-                  auto-fit-popup-width
-                  :unmount-on-close="false"
-                  trigger="click"
-                  :popup-translate="[0, -10]"
-                  v-model:popupVisible="showUserMenu"
-                >
+              <a-trigger
+                position="top"
+                auto-fit-position
+                auto-fit-popup-width
+                :unmount-on-close="false"
+                trigger="click"
+                :popup-translate="[0, -10]"
+                v-model:popupVisible="showUserMenu"
+              >
+                <div class="menu-panel-user">
                   <div class="menu-panel-user-block">
                     <a-image
                       class="round"
@@ -509,43 +513,43 @@ const { logo } = useLogo()
                       icon="material-symbols:more-horiz"
                     />
                   </div>
-                  <template #content>
-                    <div class="user-menu-basic">
-                      <div class="user-menu-item user-menu-header">
-                        <a-image
-                          class="round"
-                          width="40"
-                          height="40"
-                          round
-                          :src="userInfo?.avatar || defaultAvatar"
-                          :preview="false"
-                        />
-                        <div>{{ userInfo?.acct }}</div>
-                      </div>
-                      <div class="user-menu-item" @click="goRouter('/mutes')">
-                        <div class="user-menu-item_text">
-                          {{ t('login.mutedUser') }}
-                        </div>
-                      </div>
-                      <div class="user-menu-item" @click="goRouter('/blocks')">
-                        <div class="user-menu-item_text">
-                          {{ t('login.blockedUser') }}
-                        </div>
-                      </div>
-                      <div class="user-menu-item" @click="logout">
-                        <div class="user-menu-item_text">
-                          {{ t('login.signOut') }}
-                        </div>
-                      </div>
-                      <div class="user-menu-item" @click="changePWD">
-                        <div class="user-menu-item_text">
-                          {{ t('login.changePassword') }}
-                        </div>
+                </div>
+                <template #content>
+                  <div class="user-menu-basic">
+                    <div class="user-menu-item user-menu-header">
+                      <a-image
+                        class="round"
+                        width="40"
+                        height="40"
+                        round
+                        :src="userInfo?.avatar || defaultAvatar"
+                        :preview="false"
+                      />
+                      <div>{{ userInfo?.acct }}</div>
+                    </div>
+                    <div class="user-menu-item" @click="goRouter('/mutes')">
+                      <div class="user-menu-item_text">
+                        {{ t('login.mutedUser') }}
                       </div>
                     </div>
-                  </template>
-                </a-trigger>
-              </div>
+                    <div class="user-menu-item" @click="goRouter('/blocks')">
+                      <div class="user-menu-item_text">
+                        {{ t('login.blockedUser') }}
+                      </div>
+                    </div>
+                    <div class="user-menu-item" @click="logout">
+                      <div class="user-menu-item_text">
+                        {{ t('login.signOut') }}
+                      </div>
+                    </div>
+                    <div class="user-menu-item" @click="changePWD">
+                      <div class="user-menu-item_text">
+                        {{ t('login.changePassword') }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </a-trigger>
             </template>
           </div>
         </div>
@@ -601,8 +605,8 @@ const { logo } = useLogo()
             }"
           >
             <router-link class="menu-router-link" :to="item.path">
-              <Icon
-                :icon="
+              <SvgIcon
+                :name="
                   item.isMobileActive?.() ||
                   item.isActive?.() ||
                   route.name?.includes(item.name)
@@ -716,8 +720,8 @@ const { logo } = useLogo()
               @click="goTop"
             >
               <div class="menu-panel_link-icon">
-                <Icon
-                  :icon="
+                <SvgIcon
+                  :name="
                     item.isActive?.() || route.name?.includes(item.name)
                       ? item.icon_active
                       : item.icon
@@ -862,6 +866,7 @@ const { logo } = useLogo()
         flex-shrink: 1;
         min-height: 0;
         overflow-y: auto;
+        width: 100%;
       }
 
       .menu-panel-userInfo {
@@ -877,12 +882,11 @@ const { logo } = useLogo()
           display: flex;
           align-items: center;
           gap: 10px;
-          padding: 8px;
-          border-radius: 100px;
+          padding: 12px 22px;
+          border-radius: 10px;
           cursor: pointer;
-
           &:hover {
-            background-color: var(--color-neutral-3);
+            background-color: var(--color-neutral-2);
           }
         }
       }
@@ -1073,10 +1077,6 @@ const { logo } = useLogo()
     .menu-panel_link {
       padding-left: 10px;
       color: var(--color-text-1);
-      &-active {
-        color: var(--color-text-1);
-        background: rgb(var(--gray-3));
-      }
     }
     .menu-panel_divid {
       display: none;
@@ -1176,6 +1176,9 @@ const { logo } = useLogo()
   .menu-panel_link-active {
     @extend %menu-panel_link-active;
   }
+  .menu-panel_link-active:hover {
+    @extend %menu-panel_link-active_hover;
+  }
   .menu-panel_link-icon {
     @extend %menu-panel_link-icon;
   }
@@ -1197,6 +1200,9 @@ const { logo } = useLogo()
   .menu-panel_link-active {
     @extend %menu-panel_link-active;
   }
+  .menu-panel_link-active:hover {
+    @extend %menu-panel_link-active_hover;
+  }
   .menu-panel_link-icon {
     @extend %menu-panel_link-icon;
   }
@@ -1214,12 +1220,11 @@ const { logo } = useLogo()
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
-  border-radius: 80px;
+  padding: 10px 20px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s;
   padding-right: 80px;
-  padding-left: 14px;
   font-size: 20px;
   color: var(--color-text-1);
 }
@@ -1235,11 +1240,13 @@ const { logo } = useLogo()
   right: -8px;
 }
 %menu-panel_link_hover {
-  background-color: rgb(var(--gray-2));
+  background-color: rgb(var(--gray-1));
 }
 
 %menu-panel_link-active {
   background-color: rgb(var(--gray-2));
-  font-weight: bold;
+}
+%menu-panel_link-active_hover {
+  background-color: rgb(var(--gray-3));
 }
 </style>
