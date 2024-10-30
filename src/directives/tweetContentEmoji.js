@@ -5,7 +5,7 @@ export default {
     emojiList.forEach((item) => {
       const text = `:${item.shortcode}:`;
       const reg = new RegExp(text, 'g');
-      el.innerHTML = el.innerHTML.replace(reg, `<img src="${item.image_url}" style="width:20px;display: inline-block" />`);
+      el.innerHTML = el.innerHTML.replace(reg, `<img src="${item.image_url}" style="width:20px;display: inline-block;vertical-align: sub;" />`);
     });
   },
   mounted(el, binding) {
