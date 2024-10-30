@@ -12,7 +12,7 @@ export const handleAuthorize = (data) => {
   return request({
     url: `/_api/v1/follow_requests/${data.id}/authorize`,
     method: 'post',
-    body: JSON.stringify(data),
+    data
   });
 };
 
@@ -21,6 +21,6 @@ export const reject = (data) => {
   return request({
     url: `/_api/v1/follow_requests/${data.id}/reject`,
     method: 'post',
-    body: JSON.stringify(data),
+    data
   });
 };

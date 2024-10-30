@@ -54,7 +54,7 @@ export const muteUser = (data) => {
   return request({
     url: '/_api/v1/mute',
     method: 'POST',
-    data: data,
+    data,
   });
 };
 // 获取屏蔽列表
@@ -89,7 +89,7 @@ export const reportUser = (data) => {
   return request({
     url: '/_api/v1/report',
     method: 'POST',
-    data: data,
+    data,
   });
 };
 

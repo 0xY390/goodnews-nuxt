@@ -5,7 +5,7 @@ export const tweetToVote = (pollId, data) => {
   return request({
     url: `/_api/v1/polls/${pollId}/votes`,
     method: 'post',
-    body: JSON.stringify(data),
+    data
   });
 };
 
@@ -14,7 +14,7 @@ export const tweetToPost = (data) => {
   return request({
     url: '/_api/v1/statuses',
     method: 'POST',
-    body: data,
+    data
   });
 };
 
@@ -50,11 +50,11 @@ export const getTimeLineData = (params) => {
 };
 
 // 我关注的人的推文
-export const getFollowingTweets = (data) => {
+export const getFollowingTweets = (params) => {
   return request({
     url: '/_api/v1/following',
     method: 'GET',
-    data,
+    params
   });
 };
 
@@ -119,7 +119,7 @@ export const replyToTweet = (data) => {
   return request({
     url: `/_api/v1/statuses`,
     method: 'post',
-    body: data,
+    data
   });
 };
 // 评论推文的列表
@@ -136,7 +136,7 @@ export const editTweetData = (data) => {
   return request({
     url: `/_api/v1/statuses/${data.id}`,
     method: 'put',
-    body: data,
+    data,
   });
 };
 
@@ -145,7 +145,7 @@ export const recordTweetView = (status_ids) => {
   return request({
     url: `/_api/v1/view-statuses`,
     method: 'post',
-    body: {
+    data: {
       status_ids,
     }
   });
@@ -155,7 +155,7 @@ export const unlockTweet = (tweetId, hash) => {
   return request({
     url: `/_api/v1/statuses/${tweetId}/unlock`,
     method: 'put',
-    body: {
+    data: {
       hash,
     },
   });
