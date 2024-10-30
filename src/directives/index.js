@@ -13,7 +13,6 @@ const directives = {
 
 export default {
   install(app) {
-    console.log(`output->按照依赖`, app)
     Object.keys(directives).forEach((key) => {
       app.directive(key, directives[key])
     })

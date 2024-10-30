@@ -5,7 +5,6 @@ import { useModalStore, useUserStore } from '@/stores'
 import { Message } from '@arco-design/web-vue'
 const changePwdModalStore = useModalStore()
 const { isShowModal } = storeToRefs(changePwdModalStore)
-console.log(`output->changePassword`, isShowModal.value)
 
 const { t } = useI18n()
 // 状态

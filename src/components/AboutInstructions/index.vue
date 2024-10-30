@@ -3,7 +3,7 @@
     <p class="link-footer-text">
       <template v-for="item in linkList" :key="item.name">
         <span v-if="item.tipText">{{ item.tipText }}</span>
-        <template v-if="isVueRouterLink(item.link)">
+        <template v-if="item.link && isVueRouterLink(item.link)">
           <router-link v-if="item.link" :to="item.link" :target="item.target">
             {{ item.name }}
           </router-link>
