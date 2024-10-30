@@ -45,6 +45,24 @@ const router = createRouter({
             keepAlive: true
           }
         },
+        {
+          path: '/user/:acct/follower',
+          name: 'acct-follower',
+          component: () => import('@/views/user/follower.vue'),
+          meta: {
+            title: '我的粉丝',
+            keepAlive: true
+          }
+        },
+        {
+          path: '/user/:acct/following',
+          name: 'acct-following',
+          component: () => import('@/views/user/following.vue'),
+          meta: {
+            title: '我的关注',
+            keepAlive: true
+          }
+        },
         // 推文详情
         {
           path: '/user/:acct/status/:id',

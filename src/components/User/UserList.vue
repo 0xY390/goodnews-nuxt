@@ -1,9 +1,5 @@
 <template>
-  <RealList
-    @reach-bottom="getListData"
-    :scrollbar="scrollbar"
-    class="user-list"
-  >
+  <RealList @reach-bottom="getMaxId" :scrollbar="scrollbar" class="user-list">
     <div
       v-for="account in dataList"
       :key="account.id"
@@ -37,7 +33,7 @@
 </template>
 <script setup>
 import FollowButton from '@/components/Account/FollowButton.vue'
-import { getSearchData } from '@/api/search'
+import request from '~/utils/request'
 const router = useRouter()
 const route = useRoute()
 const props = defineProps({
@@ -48,19 +44,30 @@ const props = defineProps({
 })
 const dataList = ref([])
 const scrollbar = ref(true)
-const currentPage = ref(0)
+const maxId = ref('')
 const getListData = async () => {
-  currentPage.value++
-  const query = {
-    q: route.query.q,
-    type: 'accounts',
-    page: currentPage.value,
-    resolve: true
-  }
-  const res = await getSearchData(query)
+  const res = await request(props.url, {
+    method: 'get',
+    params: maxId.value ? { max_id: maxId.value } : {}
+  })
   dataList.value.push(...res.data)
-  if (dataList.value.length >= res.total) scrollbar.value = false
+  console.log(`output->res.data`, res.data)
+  scrollbar.value = res.data.length >= 30
 }
+const getMaxId = () => {
+  if (dataList.value.length === 0) return
+  maxId.value = dataList.value[dataList.value.length - 1].id
+}
+watch(
+  maxId,
+  () => {
+    console.log(`output->1`, dataList.value.length)
+    getListData()
+  },
+  {
+    immediate: true
+  }
+)
 
 const goRouter = path => {
   router.push(path)
