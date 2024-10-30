@@ -26,7 +26,7 @@ const handleSubmit = async formData => {
       await router.replace({ query: { ...route.query, login: undefined } })
     }
     loginModalStore.closeLoginModal()
-    // router.go(0)
+    router.go(0)
   } catch (error) {
     console.log(`output->error`, error)
     loginLoading.value = false

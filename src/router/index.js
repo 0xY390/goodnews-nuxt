@@ -298,6 +298,12 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('@/views/register/index.vue')
+    },
+    {
+      // 验证邮箱
+      path: '/confirm',
+      name: 'confirm',
+      component: () => import('@/views/confirm/index.vue')
     }
   ]
 })
