@@ -96,19 +96,6 @@ const linkList = computed(() => {
       }
     }
   }
-  // ul {
-  //   li {
-  //     & + li {
-  //       position: relative;
-  //     }
-  //     a {
-  //       cursor: pointer;
-  //       &:hover {
-  //         text-decoration: underline;
-  //       }
-  //     }
-  //   }
-  // }
 }
 .demo-basic {
   width: 140px;
