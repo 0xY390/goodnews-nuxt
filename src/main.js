@@ -38,9 +38,6 @@ components(app)
 
 // 自定义指令
 import directives from '@/directives'
-Object.keys(directives).forEach(key => {
-  app.directive(key, directives[key])
-})
-
+app.use(directives)
 
 app.mount('#app')

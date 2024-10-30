@@ -1,5 +1,6 @@
-export const tweetContontEmoji = {
+export default {
   beforeMount(el, binding) {
+    console.log(`output->el,binding`, el, binding)
     const emojiList = binding?.value?.emoji || [];
     emojiList.forEach((item) => {
       const text = `:${item.shortcode}:`;
@@ -7,4 +8,7 @@ export const tweetContontEmoji = {
       el.innerHTML = el.innerHTML.replace(reg, `<img src="${item.image_url}" style="width:20px;display: inline-block" />`);
     });
   },
+  mounted(el, binding) {
+    console.log(`output->el,binding`, el, binding)
+  }
 }

@@ -1,4 +1,4 @@
-export const accountName = {
+export default {
   beforeMount(el, binding) {
     const emojiList = binding?.value?.emoji || []
     emojiList.forEach((item) => {

@@ -1,4 +1,4 @@
-export const onlyPlay = {
+export default {
   beforeMount(el) {
     el.cb = () => {
       const videos = document.querySelectorAll('video[data-playing="true"]');

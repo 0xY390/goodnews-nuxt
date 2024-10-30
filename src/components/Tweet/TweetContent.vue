@@ -310,7 +310,7 @@ const tippyTheme = computed(() => {
           tweetData.content_rendered ||
           tweetData.content
         "
-        v-tweetContontEmoji="tweetData"
+        v-tweetContentEmoji="tweetData"
       ></div>
     </div>
     <a-link v-if="isTextExceeded" class="showmore" @click.stop="showMore">{{

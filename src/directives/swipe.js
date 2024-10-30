@@ -1,4 +1,4 @@
-export const swipe = {
+export default {
   async mounted(el, binding) {
     await nextTick();
     let scrollY = 0;

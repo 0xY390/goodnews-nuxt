@@ -1,4 +1,4 @@
-export const timelineRestrain = {
+export default {
   async mounted(el, binding) {
     const isImg = el.tagName === 'IMG';
     if (!isImg) return;
