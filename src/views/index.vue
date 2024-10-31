@@ -181,12 +181,7 @@ onActivated(async () => {
 })
 
 const nextPageHref = computed(() => {
-  const routes = router.getRoutes()
-  const currentIndex = routes.find(r => r.path === route.path)
-  const path = currentIndex?.path.endsWith('/')
-    ? currentIndex?.path
-    : currentIndex?.path + '/'
-  return path + 'page-maxid-' + tweetList.value[tweetList.value.length - 1]?.id
+  return '/page-maxid-' + tweetList.value[tweetList.value.length - 1]?.id
 })
 watchEffect(() => {
   if (route.params.maxid) {
