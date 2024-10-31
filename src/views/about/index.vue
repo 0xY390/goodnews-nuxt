@@ -69,7 +69,7 @@ const renderImg = computed(() => {
 
       <a-collapse class="custom-collapse" :default-active-key="['1']">
         <a-collapse-item :header="t('about.title')" key="1">
-          <div class="collapse-content" v-html="descData.content"></div>
+          <div class="collapse-content" v-html="descData?.content"></div>
         </a-collapse-item>
         <a-collapse-item :header="t('about.siteRules')" key="2">
           <div class="collapse-content w-full">
@@ -238,6 +238,7 @@ const renderImg = computed(() => {
         display: flex;
         justify-content: center;
         align-items: center;
+        color: var(--color-neutral-1);
       }
 
       .left {
