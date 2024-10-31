@@ -11,14 +11,15 @@ const renderImg = computed(() => {
     props.account?.avatar || props.account?.avatar_remote_url
   return accountAvatar || defaultAvatar
 })
+const router = useRouter()
 const goRouter = () => {
-  navigateTo(`/user/${props.account['acct']}`)
+  router.push(`/user/${props.account['acct']}`)
 }
 const goUserSocial = path => {
-  navigateTo(`/user/${props.account['acct']}/${path}`)
+  router.push(`/user/${props.account['acct']}/${path}`)
 }
 const goPath = path => {
-  navigateTo(path)
+  router.push(path)
 }
 const userStore = useUserStore()
 
