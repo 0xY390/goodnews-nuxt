@@ -1,12 +1,15 @@
 import { decodeBlurHash } from 'fast-blurhash';
 const getImgSize = (data) => {
   const width = 40;
+  const h = data.thumbnail_height || data.height
+  const w = data.thumbnail_width || data.width
   // 将高度按照宽高比例缩放，如果是小数则向上取整
-  const height = Math.ceil((data.thumbnail_height || data.height * width) / (data.thumbnail_width || data.width));
-  return { width, height };
+  const height = Math.ceil((h * width) / w)
+  return { width, height }
 };
 const blurhash = (data) => {
   const { width, height } = getImgSize(data);
+  console.log(`output->width,height`, data, width, height)
   const blurhash = decodeBlurHash(data.blurhash, width, height);
   return blurhash;
 };
