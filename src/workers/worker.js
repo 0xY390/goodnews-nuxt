@@ -2,7 +2,7 @@ import { decodeBlurHash } from 'fast-blurhash';
 const getImgSize = (data) => {
   const width = 40;
   // 将高度按照宽高比例缩放，如果是小数则向上取整
-  const height = Math.ceil((data.thumbnail_height * width) / data.thumbnail_width);
+  const height = Math.ceil((data.thumbnail_height || data.height * width) / (data.thumbnail_width || data.width));
   return { width, height };
 };
 const blurhash = (data) => {
