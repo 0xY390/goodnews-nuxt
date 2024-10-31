@@ -3,107 +3,109 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 const props = defineProps({
   data: {
     type: Object,
-    default: () => ({}),
+    default: () => ({})
   },
   defaultImg: {
     type: String,
-    default: '',
+    default: ''
   },
   dataSrc: {
     type: String,
-    default: '',
-  },
-});
+    default: ''
+  }
+})
 
-const tweetMode = inject('tweetMode', ref('list'));
+const tweetMode = inject('tweetMode', ref('list'))
 const isDetail = computed(() => {
-  return tweetMode.value === 'detail';
-});
+  return tweetMode.value === 'detail'
+})
 
 const renderWidth = computed(() => {
   if (isDetail.value) {
     if (props.data.width) {
-      const num = props.data.width + '';
-      return num;
+      const num = props.data.width + ''
+      return num
     }
-    return '';
+    return ''
   }
-  const num = (props.data.thumbnail_width || props.data.width || 500) + '';
-  return num;
-});
-const isSensitive = inject('isSensitive', ref(false));
+  const num = (props.data.thumbnail_width || props.data.width || 500) + ''
+  return num
+})
+const isSensitive = inject('isSensitive', ref(false))
 // 敏感内容封面
-const sensitiveCover = ref('');
-const src = ref(props.defaultImg || '/images/bg-white.png');
+const sensitiveCover = ref('')
+const src = ref(props.defaultImg || '/images/bg-white.png')
 // 原图是否加载完成
-const isOriginal = ref(false);
+const isOriginal = ref(false)
 // 原图url
 watchEffect(() => {
   if (!isSensitive.value && isOriginal.value) {
     if (src.value != props.dataSrc) {
-      src.value = props.dataSrc;
+      src.value = props.dataSrc
     }
   }
   if (isSensitive.value) {
-    src.value = sensitiveCover.value;
+    src.value = sensitiveCover.value
   }
-});
-const img = ref(null);
-let observer = null;
+})
+const img = ref(null)
+let observer = null
 
-import MyWorker from '@/workers/worker.js?worker';
+import MyWorker from '@/workers/worker.js?worker'
 onMounted(async () => {
-  await nextTick();
+  await nextTick()
   observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
+    entries.forEach(entry => {
       if (entry.isIntersecting) {
         // 如果有blurhash,则显示模糊图片
         if (props.data?.blurhash && props.data.height && props.data.width) {
-          const worker = new MyWorker();
-          const data = JSON.stringify(props.data);
-          worker.postMessage(data);
-          worker.onmessage = (e) => {
+          const worker = new MyWorker()
+          const data = JSON.stringify(props.data)
+          worker.postMessage(data)
+          worker.onmessage = e => {
             try {
-              const blob = e.data;
-              const blobUrl = URL.createObjectURL(blob);
-              sensitiveCover.value = blobUrl;
+              const blob = e.data
+              const blobUrl = URL.createObjectURL(new Blob([blob]), {
+                type: 'image/jpeg'
+              })
+              sensitiveCover.value = blobUrl
               if (!isOriginal.value) {
-                src.value = blobUrl;
+                src.value = blobUrl
               }
             } catch (error) {
-              console.log(error);
+              console.log(error)
             }
-            worker.terminate();
-          };
+            worker.terminate()
+          }
         } else {
           if (props.defaultImg) {
-            sensitiveCover.value = props.defaultImg;
-            src.value = props.defaultImg;
+            sensitiveCover.value = props.defaultImg
+            src.value = props.defaultImg
           }
         }
         if (props.dataSrc === '') {
-          return;
+          return
         }
-        const image = new Image();
-        image.src = props.dataSrc;
+        const image = new Image()
+        image.src = props.dataSrc
         image.onload = () => {
-          isOriginal.value = true;
+          isOriginal.value = true
           if (!isSensitive.value) {
-            src.value = props.dataSrc;
+            src.value = props.dataSrc
           }
-        };
-        observer.unobserve(entry.target);
+        }
+        observer.unobserve(entry.target)
       }
-    });
-  });
-  img.value && observer.observe(img.value);
-});
+    })
+  })
+  img.value && observer.observe(img.value)
+})
 
 onUnmounted(() => {
-  observer?.disconnect();
-});
+  observer?.disconnect()
+})
 </script>
