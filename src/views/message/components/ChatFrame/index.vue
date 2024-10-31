@@ -106,7 +106,7 @@ const onClickLeft = () => router.back()
       >
         <template #suffix>
           <div class="icon-btn" @click="sendMessage">
-            <Icon name="carbon:send-alt-filled" />
+            <Icon icon="carbon:send-alt-filled" />
           </div>
         </template>
       </a-input>

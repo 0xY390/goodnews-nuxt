@@ -102,7 +102,7 @@ const handleCancel = async () => {
           <div class="rule-item-content">
             <div class="rule-text">{{ item.text }}</div>
             <a-link class="remove-icon" @click="removeRule(item)">
-              <Icon name="solar:trash-bin-minimalistic-bold"></Icon>
+              <Icon icon="solar:trash-bin-minimalistic-bold"></Icon>
               <span>{{ $t('common.delete') }}</span>
             </a-link>
           </div>
